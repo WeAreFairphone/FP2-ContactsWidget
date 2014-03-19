@@ -211,23 +211,26 @@ public class PeopleWidget extends AppWidgetProvider
             for (int i = 0; i < containerPhoto.length && i < (contactList.size()); i++)
             {
                 updateImage(containerPhoto[i], contactList.get(i).photoUri);
-                String contactName = TextUtils.isEmpty(contactList.get(i).name) ? contactList.get(i).phoneNumber : contactList.get(i).name;
-                mViews.setTextViewText(containerName[i], contactName);
+                String contactName = TextUtils.isEmpty(contactList.get(i).name) ? "Unknown" : contactList.get(i).name;
+
+                String textViewText = contactName + "\n" + contactList.get(i).phoneNumber;
+                mViews.setTextViewText(containerName[i], textViewText);
+
                 // open contact
-                addOpenContactBehaviour(containerName, contactList, i);
+                addOpenContactBehaviour(containerPhone, contactList, i);
 
                 switch (contactList.get(i).getLastAction())
                 {
                     case CALL:
                         // call contact
-                        addCallContactBehaviour(containerPhone, contactList, i, false);
-                        addSmsContactBehaviour(containerSms, contactList, i, true);
+                        addCallContactBehaviour(containerSms, contactList, i, false);
+                        mViews.setTextViewCompoundDrawables(containerName[i], R.drawable.home_icon, 0, 0, 0);
                         break;
 
                     case SMS:
                         // sms contact
                         addSmsContactBehaviour(containerSms, contactList, i, false);
-                        addCallContactBehaviour(containerPhone, contactList, i, true);
+                        mViews.setTextViewCompoundDrawables(containerName[i], R.drawable.sms_icon, 0, 0, 0);
                         break;
 
                     default:
