@@ -3,7 +3,7 @@
     android:initialLayout="@layout/favourite_access_widget"
     android:minHeight="100dp"
     android:minWidth="100dp"
-    android:previewImage="@drawable/ic_launcher"
+    android:previewImage="@drawable/people_widget_all_contacts_launcher"
     android:updatePeriodMillis="1800000" 
     android:resizeMode="vertical|horizontal"
     android:widgetCategory="home_screen|keyguard">

@@ -5,6 +5,56 @@
     android:background="@color/transparent_white"
     android:orientation="vertical" >
 
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp" >
+
+        <ImageButton
+            android:id="@+id/buttonLauncher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="#00ffffff"
+            android:src="@drawable/people_widget_all_contacts_button_icon" />
+
+        <Button
+            android:id="@+id/buttonReset"
+            style="@style/PeopleWidgetButtonReset"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="6.6dp"
+            android:layout_marginTop="13.5dp"
+            android:text="@string/reset"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/buttonResetDisabled"
+            style="@style/PeopleWidgetButtonReset"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="6.6dp"
+            android:layout_marginTop="13.5dp"
+            android:enabled="false"
+            android:text="@string/reset"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/most_contacted_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:shadowColor="@color/black"
+        android:shadowRadius="5"
+        android:text="@string/most_contacted_text_label"
+        android:textColor="@color/white"
+        android:textSize="15dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -90,13 +140,6 @@
                 android:textColor="@color/white"
                 android:textSize="10dp" />
         </FrameLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal" >
 
         <FrameLayout
             android:layout_width="0dp"
@@ -137,6 +180,13 @@
                 android:textColor="@color/white"
                 android:textSize="10dp" />
         </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
 
         <FrameLayout
             android:layout_width="0dp"
@@ -177,13 +227,6 @@
                 android:textColor="@color/white"
                 android:textSize="10dp" />
         </FrameLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal" >
 
         <FrameLayout
             android:layout_width="0dp"
@@ -266,6 +309,17 @@
         </FrameLayout>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/last_contacted_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:shadowColor="@color/black"
+        android:shadowRadius="5"
+        android:text="@string/last_contacted_text_label"
+        android:textColor="@color/white"
+        android:textSize="15dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -292,15 +346,13 @@
                     android:id="@+id/contact_phone_7"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/transparent_green" />
+                    android:layout_weight="1" />
 
                 <ImageView
                     android:id="@+id/contact_sms_7"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/transparent_red" />
+                    android:layout_weight="1"/>
             </LinearLayout>
 
             <TextView
@@ -308,7 +360,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
-                android:background="@color/transparent_blue"
                 android:shadowColor="@color/black"
                 android:shadowRadius="5"
                 android:textColor="@color/white"
@@ -335,15 +386,13 @@
                     android:id="@+id/contact_phone_8"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/transparent_green" />
+                    android:layout_weight="1"/>
 
                 <ImageView
                     android:id="@+id/contact_sms_8"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/transparent_red" />
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <TextView
@@ -351,7 +400,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
-                android:background="@color/transparent_blue"
                 android:shadowColor="@color/black"
                 android:shadowRadius="5"
                 android:textColor="@color/white"
@@ -385,15 +433,13 @@
                     android:id="@+id/contact_phone_9"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/transparent_green" />
+                    android:layout_weight="1"/>
 
                 <ImageView
                     android:id="@+id/contact_sms_9"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/transparent_red" />
+                    android:layout_weight="1"/>
             </LinearLayout>
 
             <TextView
@@ -401,7 +447,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
-                android:background="@color/transparent_blue"
                 android:shadowColor="@color/black"
                 android:shadowRadius="5"
                 android:textColor="@color/white"
@@ -428,15 +473,13 @@
                     android:id="@+id/contact_phone_10"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/transparent_green" />
+                    android:layout_weight="1" />
 
                 <ImageView
                     android:id="@+id/contact_sms_10"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/transparent_red" />
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <TextView
@@ -444,7 +487,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
-                android:background="@color/transparent_blue"
                 android:shadowColor="@color/black"
                 android:shadowRadius="5"
                 android:textColor="@color/white"

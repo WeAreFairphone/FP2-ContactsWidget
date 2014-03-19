@@ -1,11 +1,17 @@
 package com.kwamecorp.peoplewidget.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.kwamecorp.peoplewidget.data.ContactInfo;
+import com.kwamecorp.peoplewidget.data.ContactInfo.LAST_ACTION;
+import com.kwamecorp.peoplewidget.data.PeopleManager;
+import com.kwamecorp.peoplewidget.receivers.CallInterceptorReceiver;
+import com.kwamecorp.peoplewidget.receivers.CallListener;
+import com.kwamecorp.peoplewidget.receivers.OutgoingCallInterceptor;
+import com.kwamecorp.peoplewidget.receivers.SmsObserver;
+import com.kwamecorp.peoplewidget.widget.PeopleWidget;
 
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -16,14 +22,9 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.kwamecorp.peoplewidget.data.ContactInfo;
-import com.kwamecorp.peoplewidget.data.PeopleManager;
-import com.kwamecorp.peoplewidget.data.ContactInfo.LAST_ACTION;
-import com.kwamecorp.peoplewidget.receivers.CallInterceptorReceiver;
-import com.kwamecorp.peoplewidget.receivers.CallListener;
-import com.kwamecorp.peoplewidget.receivers.OutgoingCallInterceptor;
-import com.kwamecorp.peoplewidget.receivers.SmsObserver;
-import com.kwamecorp.peoplewidget.widget.PeopleWidget;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class CommunicationMonitorService extends Service implements CallListener
 {
@@ -31,13 +32,21 @@ public class CommunicationMonitorService extends Service implements CallListener
 
     public static final String PREFS_PEOPLE_WIDGET_CONTACTS_DATA = "FAIRPHONE_PEOPLE_WIDGET_CONTACT_DB";
 
+    public static final String LAUNCH_CONTACTS_APP = "LAUNCH_CONTACTS_APP";
+    public static final String PEOPLE_WIDGET_RESET = "PEOPLE_WIDGET_RESET";
+
     private CallInterceptorReceiver mCallBroadcastReceiver;
     private ContentObserver smsObserver;
+
+    private BroadcastReceiver mBCastPeopleWidgetReset;
+
+    private BroadcastReceiver mBCastAllContactsLauncher;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         registerCommsListeners();
+        setupBroadcastReceivers();
         loadContactsInfo(this);
         return Service.START_NOT_STICKY;
     }
@@ -55,6 +64,7 @@ public class CommunicationMonitorService extends Service implements CallListener
         // TODO Auto-generated method stub
         super.onDestroy();
         unregisterCommsListeners();
+        clearPeopleWidgetBroadcastReceivers();
     }
 
     @Override
@@ -167,5 +177,53 @@ public class CommunicationMonitorService extends Service implements CallListener
         {
             new PeopleWidget().onUpdate(this, appWidgetManager, appWidgetIds);
         }
+    }
+
+    private void setupBroadcastReceivers()
+    {
+        // launching the application
+        mBCastPeopleWidgetReset = new BroadcastReceiver()
+        {
+
+            @Override
+            public void onReceive(Context context, Intent intent)
+            {
+                Log.i(TAG, "Received a call from widget....Reset");
+                PeopleManager.getInstance().resetState();
+                savePeopleWidgetData();
+                updatePeopleWidgets();
+            }
+        };
+
+        mBCastAllContactsLauncher = new BroadcastReceiver()
+        {
+
+            @Override
+            public void onReceive(Context context, Intent intent)
+            {
+                String packageName = "com.android.contacts";
+                String className = "com.android.contacts.activities.PeopleActivity";
+
+                Log.i(TAG, "Received a call from widget....Launch App " + packageName + " - " + className);
+
+                Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
+
+                if (launchIntent != null)
+                {
+                    launchIntent.setComponent(new ComponentName(packageName, className));
+                    startActivity(launchIntent);
+                }
+            }
+        };
+
+        registerReceiver(mBCastPeopleWidgetReset, new IntentFilter(CommunicationMonitorService.PEOPLE_WIDGET_RESET));
+
+        registerReceiver(mBCastAllContactsLauncher, new IntentFilter(CommunicationMonitorService.LAUNCH_CONTACTS_APP));
+    }
+
+    private void clearPeopleWidgetBroadcastReceivers()
+    {
+        unregisterReceiver(mBCastAllContactsLauncher);
+        unregisterReceiver(mBCastPeopleWidgetReset);
     }
 }

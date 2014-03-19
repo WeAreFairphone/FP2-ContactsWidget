@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
 
     <application
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/people_widget_all_contacts_button_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -32,7 +32,7 @@
 
         <service
             android:name="com.kwamecorp.peoplewidget.service.CommunicationMonitorService"
-            android:icon="@drawable/ic_launcher"
+            android:icon="@drawable/people_widget_all_contacts_launcher"
             android:label="CommunicationMonitorService" >
         </service>
 

@@ -4,6 +4,7 @@ import com.kwamecorp.peoplewidget.R;
 import com.kwamecorp.peoplewidget.data.ContactInfo;
 import com.kwamecorp.peoplewidget.data.ContactInfoManager;
 import com.kwamecorp.peoplewidget.data.PeopleManager;
+import com.kwamecorp.peoplewidget.service.CommunicationMonitorService;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -21,6 +22,7 @@ import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import java.io.FileDescriptor;
@@ -187,33 +189,15 @@ public class PeopleWidget extends AppWidgetProvider
             ContactInfoManager instance = PeopleManager.getInstance();
 
             List<ContactInfo> mostContacted = new ArrayList<ContactInfo>(instance.getMostContacted());
-            for (int i = 0; i < mContainerImage.length && i < (mostContacted.size()); i++)
-            {
-                updateImage(mContainerImage[i], mostContacted.get(i).photoUri);
-                String contactName = TextUtils.isEmpty(mostContacted.get(i).name) ? mostContacted.get(i).phoneNumber : mostContacted.get(i).name;
-                mViews.setTextViewText(mContainerName[i], contactName);
-                // open contact
-                addOpenContactBehaviour(mContainerName, mostContacted, i);
-                // call contact
-                addCallContactBehaviour(mContainerPhone, mostContacted, i);
-                // sms contact
-                addSmsContactBehaviour(mContainerSms, mostContacted, i);
-            }
+            updateContactView(mostContacted, mContainerName, mContainerImage, mContainerPhone, mContainerSms);
 
             List<ContactInfo> lastContacted = new ArrayList<ContactInfo>(instance.getLastContacted());
+            updateContactView(lastContacted, mContainerName2, mContainerImage2, mContainerPhone2, mContainerSms2);
 
-            for (int i = 0; i < mContainerImage2.length && i < (lastContacted.size()); i++)
-            {
-                updateImage(mContainerImage2[i], lastContacted.get(i).photoUri);
-                String contactName = TextUtils.isEmpty(lastContacted.get(i).name) ? lastContacted.get(i).phoneNumber : lastContacted.get(i).name;
-                mViews.setTextViewText(mContainerName2[i], contactName);
-                // open contact
-                addOpenContactBehaviour(mContainerName2, lastContacted, i);
-                // call contact
-                addCallContactBehaviour(mContainerPhone2, lastContacted, i);
-                // sms contact
-                addSmsContactBehaviour(mContainerSms2, lastContacted, i);
-            }
+            toggleResetButtonVisibility(mViews, lastContacted, mostContacted);
+
+            int code = 0;
+            setupButtonClickIntents(mContext, code, mViews);
 
             ComponentName widget = new ComponentName(mContext, PeopleWidget.class);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
@@ -222,70 +206,101 @@ public class PeopleWidget extends AppWidgetProvider
 
         }
 
-        public void addSmsContactBehaviour(int[] containerSms, final List<ContactInfo> result, int i)
+        public void updateContactView(List<ContactInfo> contactList, int[] containerName, int[] containerPhoto, int[] containerPhone, int[] containerSms)
         {
-            String uriSms = "smsto:" + result.get(i).phoneNumber;
-            Intent intentSms = new Intent(Intent.ACTION_SENDTO);
-            intentSms.setData(Uri.parse(uriSms));
-
-            PackageManager packageManager = mContext.getPackageManager();
-            List<ResolveInfo> list = packageManager.queryIntentActivities(intentSms, 0);
-            Log.i(this.getClass().getSimpleName(), "CENAS ->" + list.size());
-            for (ResolveInfo resolveInfo : list)
+            for (int i = 0; i < containerPhoto.length && i < (contactList.size()); i++)
             {
+                updateImage(containerPhoto[i], contactList.get(i).photoUri);
+                String contactName = TextUtils.isEmpty(contactList.get(i).name) ? contactList.get(i).phoneNumber : contactList.get(i).name;
+                mViews.setTextViewText(containerName[i], contactName);
+                // open contact
+                addOpenContactBehaviour(containerName, contactList, i);
 
-                Log.i(this.getClass().getSimpleName(), resolveInfo.activityInfo.packageName + " " + resolveInfo.activityInfo.name);
+                switch (contactList.get(i).getLastAction())
+                {
+                    case CALL:
+                        // call contact
+                        addCallContactBehaviour(containerPhone, contactList, i, false);
+                        addSmsContactBehaviour(containerSms, contactList, i, true);
+                        break;
 
-                if (resolveInfo.activityInfo.name.equals("com.android.mms.ui.ComposeMessageActivity"))
-                {
-                    ComponentName comp = new ComponentName("com.android.mms", "com.android.mms.ui.ComposeMessageActivity");
-                    intentSms.setComponent(comp);
+                    case SMS:
+                        // sms contact
+                        addSmsContactBehaviour(containerSms, contactList, i, false);
+                        addCallContactBehaviour(containerPhone, contactList, i, true);
+                        break;
+
+                    default:
+                        break;
                 }
-                else if (resolveInfo.activityInfo.name.equals("com.android.mms.ui.ConversationComposer"))
-                {
-                    ComponentName comp = new ComponentName("com.android.mms", "com.android.mms.ui.ConversationComposer");
-                    intentSms.setComponent(comp);
-                }
+
             }
-            PendingIntent pendingIntentSms = PendingIntent.getActivity(mContext, 0 /*
-                                                                                    * no
-                                                                                    * requestCode
-                                                                                    */, intentSms, PendingIntent.FLAG_UPDATE_CURRENT /*
-                                                                                                                                      * 0
-                                                                                                                                      * no
-                                                                                                                                      * flags
-                                                                                                                                      */);
-            mViews.setOnClickPendingIntent(containerSms[i], pendingIntentSms);
         }
 
-        public void addCallContactBehaviour(int[] containerPhone, final List<ContactInfo> result, int i)
+        public void addSmsContactBehaviour(int[] containerSms, final List<ContactInfo> result, int i, boolean clearClickListener)
         {
+            if (!clearClickListener)
+            {
+                String uriSms = "smsto:" + result.get(i).phoneNumber;
+                Intent intentSms = new Intent(Intent.ACTION_SENDTO);
+                intentSms.setData(Uri.parse(uriSms));
 
-            String uriCall = "tel:" + result.get(i).phoneNumber;
-            Intent intentCall = new Intent(Intent.ACTION_CALL);
+                PackageManager packageManager = mContext.getPackageManager();
+                List<ResolveInfo> list = packageManager.queryIntentActivities(intentSms, 0);
+                Log.i(this.getClass().getSimpleName(), "CENAS ->" + list.size());
+                for (ResolveInfo resolveInfo : list)
+                {
 
-            ComponentName comp = new ComponentName("com.android.phone", "com.android.phone.OutgoingCallBroadcaster");
-            intentCall.setComponent(comp);
-            intentCall.setData(Uri.parse(uriCall));
-            PendingIntent pendingIntentCall = PendingIntent.getActivity(mContext, 0 /*
-                                                                                     * no
-                                                                                     * requestCode
-                                                                                     */, intentCall, PendingIntent.FLAG_UPDATE_CURRENT /*
-                                                                                                                                        * 0
-                                                                                                                                        * no
-                                                                                                                                        * flags
-                                                                                                                                        */);
-            mViews.setOnClickPendingIntent(containerPhone[i], pendingIntentCall);
+                    Log.i(this.getClass().getSimpleName(), resolveInfo.activityInfo.packageName + " " + resolveInfo.activityInfo.name);
 
-            // String uriCall = "tel:" + result.get(i).phoneNumbers;
-            // Intent intentCall = new Intent(Intent.ACTION_CALL);
-            // intentCall.setData(Uri.parse(uriCall));
-            // PendingIntent pendingIntentCall =
-            // PendingIntent.getActivity(mContext,
-            // 0 /* no requestCode */, intentCall,
-            // PendingIntent.FLAG_UPDATE_CURRENT /*0 no flags*/);
-            // mViews.setOnClickPendingIntent(mContainerPhone[i],
-            // pendingIntentCall);
+                    if (resolveInfo.activityInfo.name.equals("com.android.mms.ui.ComposeMessageActivity"))
+                    {
+                        ComponentName comp = new ComponentName("com.android.mms", "com.android.mms.ui.ComposeMessageActivity");
+                        intentSms.setComponent(comp);
+                    }
+                    else if (resolveInfo.activityInfo.name.equals("com.android.mms.ui.ConversationComposer"))
+                    {
+                        ComponentName comp = new ComponentName("com.android.mms", "com.android.mms.ui.ConversationComposer");
+                        intentSms.setComponent(comp);
+                    }
+                }
+                PendingIntent pendingIntentSms = PendingIntent.getActivity(mContext, 0, intentSms, PendingIntent.FLAG_UPDATE_CURRENT);
+                mViews.setOnClickPendingIntent(containerSms[i], pendingIntentSms);
+
+            }
+            else
+            {
+                mViews.setOnClickPendingIntent(containerSms[i], null);
+            }
+        }
+
+        public void addCallContactBehaviour(int[] containerPhone, final List<ContactInfo> result, int i, boolean clearClickListener)
+        {
+            if (!clearClickListener)
+            {
+                String uriCall = "tel:" + result.get(i).phoneNumber;
+                Intent intentCall = new Intent(Intent.ACTION_CALL);
+
+                ComponentName comp = new ComponentName("com.android.phone", "com.android.phone.OutgoingCallBroadcaster");
+                intentCall.setComponent(comp);
+                intentCall.setData(Uri.parse(uriCall));
+                PendingIntent pendingIntentCall = PendingIntent.getActivity(mContext, 0, intentCall, PendingIntent.FLAG_UPDATE_CURRENT);
+                mViews.setOnClickPendingIntent(containerPhone[i], pendingIntentCall);
+
+                // String uriCall = "tel:" + result.get(i).phoneNumbers;
+                // Intent intentCall = new Intent(Intent.ACTION_CALL);
+                // intentCall.setData(Uri.parse(uriCall));
+                // PendingIntent pendingIntentCall =
+                // PendingIntent.getActivity(mContext,
+                // 0 /* no requestCode */, intentCall,
+                // PendingIntent.FLAG_UPDATE_CURRENT /*0 no flags*/);
+                // mViews.setOnClickPendingIntent(mContainerPhone[i],
+                // pendingIntentCall);
+            }
+            else
+            {
+                mViews.setOnClickPendingIntent(containerPhone[i], null);
+            }
         }
 
         public void addOpenContactBehaviour(int[] containerImage, final List<ContactInfo> result, int i)
@@ -307,6 +322,37 @@ public class PeopleWidget extends AppWidgetProvider
             {
                 mViews.setOnClickPendingIntent(containerImage[i], null);
             }
+        }
+
+        private void toggleResetButtonVisibility(RemoteViews widget, List<ContactInfo> lastContacted, List<ContactInfo> mostContacted)
+        {
+            if (lastContacted.size() == 0 && mostContacted.size() == 0)
+            {
+                widget.setViewVisibility(R.id.buttonReset, View.GONE);
+                widget.setViewVisibility(R.id.buttonResetDisabled, View.VISIBLE);
+            }
+            else
+            {
+                widget.setViewVisibility(R.id.buttonReset, View.VISIBLE);
+                widget.setViewVisibility(R.id.buttonResetDisabled, View.GONE);
+            }
+        }
+
+        private int setupButtonClickIntents(Context context, int code, RemoteViews widget)
+        {
+            // set up the all apps intent
+            Intent launchIntent = new Intent();
+            launchIntent.setAction(CommunicationMonitorService.LAUNCH_CONTACTS_APP);
+
+            PendingIntent launchPendingIntent = PendingIntent.getBroadcast(context, code++, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            widget.setOnClickPendingIntent(R.id.buttonLauncher, launchPendingIntent);
+
+            // set up the reset apps intent
+            Intent resetIntent = new Intent();
+            resetIntent.setAction(CommunicationMonitorService.PEOPLE_WIDGET_RESET);
+            PendingIntent resetPendingIntent = PendingIntent.getBroadcast(context, code++, resetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            widget.setOnClickPendingIntent(R.id.buttonReset, resetPendingIntent);
+            return code;
         }
     }
 }

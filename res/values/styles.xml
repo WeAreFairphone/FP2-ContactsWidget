@@ -34,5 +34,19 @@
     </style>
 
     <style name="ButtonBarButton" />
+    
+    <!-- Button styles -->
+    <style name="PeopleWidgetButtonReset">
+        <item name="android:textColor">@color/button_people_widget_reset_text</item>
+        <item name="android:background">@drawable/button_people_widget_reset</item>
+        <item name="android:textSize">13.5sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
 
 </resources>
