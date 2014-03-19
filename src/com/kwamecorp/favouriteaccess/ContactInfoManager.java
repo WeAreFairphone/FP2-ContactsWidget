@@ -15,13 +15,13 @@
  */
 package com.kwamecorp.favouriteaccess;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import android.util.Log;
 
 /**
  * This class processes the count for the most contacted and the last contacted
@@ -99,12 +99,13 @@ public class ContactInfoManager
 
         // set the current time for the last execution
         cachedContact.setLastExecution(contactInfo.getLastExecution());
+        cachedContact.setLastAction(contactInfo.getLastAction());
 
         // update the information
         updateContactInformation();
     }
 
-    public void applicationRemoved(String phoneNumber)
+    public void contactRemoved(String phoneNumber)
     {
         // remove data
         ContactInfo contactInfo = _contactsInfoCache.remove(phoneNumber);
@@ -174,6 +175,7 @@ public class ContactInfoManager
         {
             if (queue.get(insertIdx).getLastExecution().before(info.getLastExecution()))
             {
+                Log.d(TAG, "Qs : " + queue.size() + " : Last contacted : Adding " + info.phoneNumber + " to position " + insertIdx);
                 queue.add(insertIdx, info);
 
                 return;
@@ -190,7 +192,6 @@ public class ContactInfoManager
     {
         for (int insertIdx = 0; insertIdx < queue.size(); insertIdx++)
         {
-            Log.d(TAG, "Fairphone - Contacting ... " + queue.get(insertIdx));
             if (info.getCount() > queue.get(insertIdx).getCount())
             {
                 Log.d(TAG, "Qs : " + queue.size() + " : Most contacted : Adding " + info.phoneNumber + " to position " + insertIdx);
@@ -199,8 +200,6 @@ public class ContactInfoManager
                 return;
             }
         }
-
-        Log.d(TAG, "Qs : " + queue.size() + " : Most contacted : Adding " + info.phoneNumber + " to first position ");
         if (queue.size() < limit)
         {
             queue.addLast(info);

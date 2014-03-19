@@ -1,15 +1,15 @@
 package com.kwamecorp.favouriteaccess;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract.PhoneLookup;
 import android.util.Log;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class ContactInfo
 {
@@ -18,6 +18,11 @@ public class ContactInfo
     private static final String SEPARATOR = ",";
     public static SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
+    public enum LAST_ACTION
+    {
+        CALL, SMS
+    }
+
     public String name;
     public String photoUri;
     public String lookup;
@@ -25,6 +30,7 @@ public class ContactInfo
     public String phoneNumber;
     private long mCounter;
     private Date mLastExecution;
+    private LAST_ACTION mLastAction;
 
     public ContactInfo(String name, String photoUri, String lookup, String contactID, String phoneNumber)
     {
@@ -35,22 +41,24 @@ public class ContactInfo
         this.phoneNumber = phoneNumber;
         this.mCounter = 0l;
         this.mLastExecution = null;
+        this.mLastAction = null;
     }
 
-    public ContactInfo(String phoneNumber, long counter)
+    public ContactInfo(String phoneNumber)
     {
         this.name = "";
         this.photoUri = "";
         this.lookup = "";
         this.contactId = "";
         this.phoneNumber = phoneNumber;
-        this.mCounter = counter;
+        this.mCounter = 0l;
         this.mLastExecution = null;
+        this.mLastAction = null;
     }
 
-    public ContactInfo(Context context, String phoneNumber, long counter, Date lastExecution)
+    public ContactInfo(Context context, String phoneNumber, long counter, Date lastExecution, String lastAction)
     {
-        ContactInfo contact = getContactFromPhoneNumber(context, phoneNumber);
+        ContactInfo contact = getContactFromPhoneNumber(context, phoneNumber, getLastActionFromString(lastAction));
 
         this.name = contact.name;
         this.photoUri = contact.photoUri;
@@ -59,6 +67,21 @@ public class ContactInfo
         this.phoneNumber = contact.phoneNumber;
         this.mCounter = counter;
         this.mLastExecution = lastExecution;
+        this.mLastAction = contact.getLastAction();
+    }
+
+    private LAST_ACTION getLastActionFromString(String lastAction)
+    {
+        LAST_ACTION action = null;
+        try
+        {
+            action = LAST_ACTION.valueOf(lastAction);
+        } catch (Exception e)
+        {
+            Log.w(TAG, "Invalid action. Setting Call");
+            action = LAST_ACTION.CALL;
+        }
+        return action;
     }
 
     public static String serializeContact(ContactInfo contact)
@@ -67,7 +90,19 @@ public class ContactInfo
         sb.append(contact.getCount());
         sb.append(SEPARATOR);
         sb.append(DATE_FORMATTER.format(contact.getLastExecution()));
+        sb.append(SEPARATOR);
+        sb.append(contact.getLastAction().name());
         return sb.toString();
+    }
+
+    public LAST_ACTION getLastAction()
+    {
+        return mLastAction;
+    }
+
+    public void setLastAction(LAST_ACTION action)
+    {
+        mLastAction = action;
     }
 
     public static ContactInfo deserializeContact(Context context, String number, String data)
@@ -76,7 +111,8 @@ public class ContactInfo
         String[] splits = data.split(SEPARATOR);
         Date lastExecution = null;
         long count = 0l;
-        if (splits != null && splits.length == 2)
+        String lastAction = null;
+        if (splits != null && splits.length == 3)
         {
             count = Long.parseLong(splits[0]);
             try
@@ -87,15 +123,12 @@ public class ContactInfo
                 e.printStackTrace();
                 lastExecution = Calendar.getInstance().getTime();
             }
+
+            lastAction = splits[2];
         }
-        ContactInfo contactInfo = new ContactInfo(context, number, count, lastExecution);
+        ContactInfo contactInfo = new ContactInfo(context, number, count, lastExecution, lastAction);
 
         return contactInfo;
-    }
-
-    private void setCount(long count)
-    {
-        mCounter = count;
     }
 
     @Override
@@ -149,7 +182,7 @@ public class ContactInfo
         this.mLastExecution = lastExecution;
     }
 
-    public static ContactInfo getContactFromPhoneNumber(Context context, String number)
+    public static ContactInfo getContactFromPhoneNumber(Context context, String number, LAST_ACTION action)
     {
         Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
 
@@ -168,7 +201,7 @@ public class ContactInfo
             String photoUri = cursor.getString(cursor.getColumnIndex(PhoneLookup.PHOTO_URI));
             String name = cursor.getString(cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME));
             String phonenumber = cursor.getString(cursor.getColumnIndex(PhoneLookup.NUMBER));
-            contact = new ContactInfo(name, photoUri, lookup, contactId, phonenumber);
+            contact = new ContactInfo(name, photoUri, lookup, contactId, number);
         }
 
         if (contact != null)
@@ -177,10 +210,11 @@ public class ContactInfo
         }
         else
         {
-            contact = new ContactInfo(number, 0l);
-            contact.setLastExecution(new Date());
+            contact = new ContactInfo(number);
             Log.d(TAG, "Number " + number + " as no contact associated.");
         }
+        contact.setLastExecution(Calendar.getInstance().getTime());
+        contact.setLastAction(action);
 
         return contact;
     }

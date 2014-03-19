@@ -1,6 +1,12 @@
 package com.kwamecorp.favouriteaccess;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import android.app.Service;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,14 +16,12 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.kwamecorp.favouriteaccess.ContactInfo.LAST_ACTION;
+import com.kwamecorp.favouriteaccess.widget.FavoriteContactsWidget;
 
 public class CommsService extends Service implements CallListener
 {
     private static final String TAG = CommsService.class.getSimpleName();
-    private static final String APP_RUN_INFO_SEPARATOR = ";";
 
     public static final String PREFS_PEOPLE_WIDGET_CONTACTS_DATA = "FAIRPHONE_PEOPLE_WIDGET_CONTACT_DB";
 
@@ -28,6 +32,7 @@ public class CommsService extends Service implements CallListener
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         registerCommsListeners();
+        loadContactsInfo(this);
         return Service.START_NOT_STICKY;
     }
 
@@ -51,7 +56,8 @@ public class CommsService extends Service implements CallListener
     {
         String msg = "Intercepted outgoing call. Number " + number;
         Log.d(TAG, msg);
-        processNumberCalled(number);
+        processNumberCalled(number, LAST_ACTION.CALL);
+        updatePeopleWidgets();
     }
 
     @Override
@@ -59,14 +65,16 @@ public class CommsService extends Service implements CallListener
     {
         String msg = "Intercepted outgoing SMS. Number " + number;
         Log.d(TAG, msg);
-        processNumberCalled(number);
+        processNumberCalled(number, LAST_ACTION.SMS);
+        updatePeopleWidgets();
     }
 
-    public void processNumberCalled(String number)
+    public void processNumberCalled(String number, LAST_ACTION action)
     {
-        ContactInfo contact = ContactInfo.getContactFromPhoneNumber(this, number);
-
+        ContactInfo contact = ContactInfo.getContactFromPhoneNumber(this, number, action);
         PeopleManager.getInstance().contactUsed(contact);
+
+        savePeopleWidgetData();
     }
 
     public void registerCommsListeners()
@@ -124,7 +132,7 @@ public class CommsService extends Service implements CallListener
         PeopleManager.getInstance().setAllContactInfo(allContacts);
     }
 
-    public void persistAppRunInfo(Context context)
+    public void persistContactInfo(Context context)
     {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_PEOPLE_WIDGET_CONTACTS_DATA, 0);
 
@@ -140,8 +148,18 @@ public class CommsService extends Service implements CallListener
         editor.commit();
     }
 
-    public void saveAppSwitcherData()
+    public void savePeopleWidgetData()
     {
-        persistAppRunInfo(this);
+        persistContactInfo(this);
+    }
+
+    public void updatePeopleWidgets()
+    {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, FavoriteContactsWidget.class));
+        if (appWidgetIds.length > 0)
+        {
+            new FavoriteContactsWidget().onUpdate(this, appWidgetManager, appWidgetIds);
+        }
     }
 }

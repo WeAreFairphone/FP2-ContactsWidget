@@ -1,7 +1,6 @@
 <resources>
 
     <color name="black_overlay">#66000000</color>
-    
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="white_gray">#CFCFCF</color>
@@ -28,12 +27,13 @@
     <color name="dashboard_gray2">#707070</color>
     <color name="dashboard_gray3">#4B4A4A</color>
     <color name="dashboard_gray4">#5C5A5A</color>
-
-    
+    <color name="transparent_red">#88FF0000</color>
+    <color name="transparent_green">#8800FF00</color>
+    <color name="transparent_blue">#880000FF</color>
     <color name="button_normal">#e8e8e8</color>
     <color name="button_press">#9f9f9f</color>
     <color name="action_bar">#FFFFFF</color>
-    
+
     <!-- for scroll letters -->
     <color name="grey_box">#676767</color>
 

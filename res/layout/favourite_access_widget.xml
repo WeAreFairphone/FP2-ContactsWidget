@@ -266,4 +266,190 @@
         </FrameLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/contact_photo_7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="20dp" >
+
+                <ImageView
+                    android:id="@+id/contact_phone_7"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/transparent_green" />
+
+                <ImageView
+                    android:id="@+id/contact_sms_7"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/transparent_red" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/contact_name_7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:background="@color/transparent_blue"
+                android:shadowColor="@color/black"
+                android:shadowRadius="5"
+                android:textColor="@color/white"
+                android:textSize="10dp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/contact_photo_8"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="20dp" >
+
+                <ImageView
+                    android:id="@+id/contact_phone_8"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/transparent_green" />
+
+                <ImageView
+                    android:id="@+id/contact_sms_8"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/transparent_red" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/contact_name_8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:background="@color/transparent_blue"
+                android:shadowColor="@color/black"
+                android:shadowRadius="5"
+                android:textColor="@color/white"
+                android:textSize="10dp" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/contact_photo_9"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="20dp" >
+
+                <ImageView
+                    android:id="@+id/contact_phone_9"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/transparent_green" />
+
+                <ImageView
+                    android:id="@+id/contact_sms_9"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/transparent_red" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/contact_name_9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:background="@color/transparent_blue"
+                android:shadowColor="@color/black"
+                android:shadowRadius="5"
+                android:textColor="@color/white"
+                android:textSize="10dp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/contact_photo_10"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="20dp" >
+
+                <ImageView
+                    android:id="@+id/contact_phone_10"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/transparent_green" />
+
+                <ImageView
+                    android:id="@+id/contact_sms_10"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/transparent_red" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/contact_name_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:background="@color/transparent_blue"
+                android:shadowColor="@color/black"
+                android:shadowRadius="5"
+                android:textColor="@color/white"
+                android:textSize="10dp" />
+        </FrameLayout>
+    </LinearLayout>
+
 </LinearLayout>
