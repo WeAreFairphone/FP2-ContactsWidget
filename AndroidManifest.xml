@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kwamecorp.favouriteaccess"
+    package="com.kwamecorp.peoplewidget"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.kwamecorp.favouriteaccess.CentralActivity"
+            android:name="com.kwamecorp.peoplewidget.CentralActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/FullscreenTheme" >
@@ -31,14 +31,14 @@
         </activity>
 
         <service
-            android:name="CommsService"
+            android:name="com.kwamecorp.peoplewidget.service.CommunicationMonitorService"
             android:icon="@drawable/ic_launcher"
-            android:label="CommsService" >
+            android:label="CommunicationMonitorService" >
         </service>
 
         <receiver
-            android:name="com.kwamecorp.favouriteaccess.widget.FavoriteContactsWidget"
-            android:label="Favourites Access" >
+            android:name="com.kwamecorp.peoplewidget.widget.PeopleWidget"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -47,7 +47,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widgetinfo" />
         </receiver>
-        <receiver android:name="com.kwamecorp.favouriteaccess.OutgoingCallInterceptor" >
+        <receiver android:name="com.kwamecorp.peoplewidget.receivers.OutgoingCallInterceptor" >
             <intent-filter android:priority="0" >
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" >
                 </action>
