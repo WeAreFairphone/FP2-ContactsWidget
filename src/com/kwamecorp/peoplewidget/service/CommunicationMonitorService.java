@@ -48,6 +48,7 @@ public class CommunicationMonitorService extends Service implements CallListener
         registerCommsListeners();
         setupBroadcastReceivers();
         loadContactsInfo(this);
+        updatePeopleWidgets();
         return Service.START_NOT_STICKY;
     }
 

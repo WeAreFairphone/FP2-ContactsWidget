@@ -36,35 +36,7 @@ public class PeopleWidget extends AppWidgetProvider
 
     private static final String TAG = PeopleWidget.class.getSimpleName();
 
-    // List of custom views that contains the contact photo and contact name
-    private int[] mContainerImage = {
-            R.id.contact_photo_1, R.id.contact_photo_2, R.id.contact_photo_3, R.id.contact_photo_4, R.id.contact_photo_5, R.id.contact_photo_6,
-    };
-    private int[] mContainerName = {
-            R.id.contact_name_1, R.id.contact_name_2, R.id.contact_name_3, R.id.contact_name_4, R.id.contact_name_5, R.id.contact_name_6,
-    };
-    private int[] mContainerPhone = {
-            R.id.contact_phone_1, R.id.contact_phone_2, R.id.contact_phone_3, R.id.contact_phone_4, R.id.contact_phone_5, R.id.contact_phone_6,
-    };
-    private int[] mContainerSms = {
-            R.id.contact_sms_1, R.id.contact_sms_2, R.id.contact_sms_3, R.id.contact_sms_4, R.id.contact_sms_5, R.id.contact_sms_6,
-    };
-
-    // List of custom views that contains the contact photo and contact name
-    private int[] mContainerImage2 = {
-            R.id.contact_photo_7, R.id.contact_photo_8, R.id.contact_photo_9, R.id.contact_photo_10,
-    };
-    private int[] mContainerName2 = {
-            R.id.contact_name_7, R.id.contact_name_8, R.id.contact_name_9, R.id.contact_name_10,
-    };
-    private int[] mContainerPhone2 = {
-            R.id.contact_phone_7, R.id.contact_phone_8, R.id.contact_phone_9, R.id.contact_phone_10,
-    };
-    private int[] mContainerSms2 = {
-            R.id.contact_sms_7, R.id.contact_sms_8, R.id.contact_sms_9, R.id.contact_sms_10,
-    };
-
-    private RemoteViews mViews;
+    private RemoteViews mWidget;
     private Context mContext;
 
     @Override
@@ -72,7 +44,7 @@ public class PeopleWidget extends AppWidgetProvider
     {
         super.onEnabled(context);
 
-        mViews = new RemoteViews(context.getPackageName(), R.layout.favourite_access_widget);
+        mWidget = new RemoteViews(context.getPackageName(), R.layout.favourite_access_widget);
         mContext = context;
         updateView();
     }
@@ -81,7 +53,7 @@ public class PeopleWidget extends AppWidgetProvider
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
     {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        mViews = new RemoteViews(context.getPackageName(), R.layout.favourite_access_widget);
+        mWidget = new RemoteViews(context.getPackageName(), R.layout.favourite_access_widget);
         mContext = context;
         Log.i(this.getClass().getSimpleName(), "onUpdate()");
         updateView();
@@ -100,16 +72,16 @@ public class PeopleWidget extends AppWidgetProvider
         });
     }
 
-    private void updateImage(final int view, final String photoUrl)
+    private void updateImage(RemoteViews view, final int viewId, final String photoUrl)
     {
         if (photoUrl != null)
         {
             Bitmap bitmap = loadContactPhoto(photoUrl, mContext);
-            mViews.setImageViewBitmap(view, bitmap);
+            view.setImageViewBitmap(viewId, bitmap);
         }
         else
         {
-            mViews.setImageViewResource(view, android.R.drawable.sym_def_app_icon);
+            view.setImageViewResource(viewId, android.R.drawable.sym_def_app_icon);
         }
     }
 
@@ -188,63 +160,126 @@ public class PeopleWidget extends AppWidgetProvider
 
             ContactInfoManager instance = PeopleManager.getInstance();
 
+            // clear the current data
+            mWidget.removeAllViews(R.id.last_contacted_row_1);
+            mWidget.removeAllViews(R.id.last_contacted_row_2);
+
+            mWidget.removeAllViews(R.id.most_contacted_row_1);
+            mWidget.removeAllViews(R.id.most_contacted_row_2);
+
             List<ContactInfo> mostContacted = new ArrayList<ContactInfo>(instance.getMostContacted());
-            updateContactView(mostContacted, mContainerName, mContainerImage, mContainerPhone, mContainerSms);
+            updateMostContactedList(mContext, mWidget, mostContacted);
 
             List<ContactInfo> lastContacted = new ArrayList<ContactInfo>(instance.getLastContacted());
-            updateContactView(lastContacted, mContainerName2, mContainerImage2, mContainerPhone2, mContainerSms2);
+            updateLastContactedList(mContext, mWidget, lastContacted);
 
-            toggleResetButtonVisibility(mViews, lastContacted, mostContacted);
+            toggleResetButtonVisibility(mWidget, lastContacted, mostContacted);
 
             int code = 0;
-            setupButtonClickIntents(mContext, code, mViews);
+            setupButtonClickIntents(mContext, code, mWidget);
 
             ComponentName widget = new ComponentName(mContext, PeopleWidget.class);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
             appWidgetManager.updateAppWidget(widget, null);
-            appWidgetManager.updateAppWidget(widget, mViews);
+            appWidgetManager.updateAppWidget(widget, mWidget);
 
         }
 
-        public void updateContactView(List<ContactInfo> contactList, int[] containerName, int[] containerPhoto, int[] containerPhone, int[] containerSms)
+        private void updateLastContactedList(Context context, RemoteViews widget, List<ContactInfo> contactInfoList)
         {
-            for (int i = 0; i < containerPhoto.length && i < (contactList.size()); i++)
+            int viewCounter = 0;
+            for (ContactInfo contactInfo : contactInfoList)
             {
-                updateImage(containerPhoto[i], contactList.get(i).photoUri);
-                String contactName = TextUtils.isEmpty(contactList.get(i).name) ? "Unknown" : contactList.get(i).name;
+                RemoteViews view = getRecentView(context, contactInfo);
 
-                String textViewText = contactName + "\n" + contactList.get(i).phoneNumber;
-                mViews.setTextViewText(containerName[i], textViewText);
-
-                // open contact
-                addOpenContactBehaviour(containerPhone, contactList, i);
-
-                switch (contactList.get(i).getLastAction())
+                if (view != null)
                 {
-                    case CALL:
-                        // call contact
-                        addCallContactBehaviour(containerSms, contactList, i, false);
-                        mViews.setTextViewCompoundDrawables(containerName[i], R.drawable.home_icon, 0, 0, 0);
-                        break;
-
-                    case SMS:
-                        // sms contact
-                        addSmsContactBehaviour(containerSms, contactList, i, false);
-                        mViews.setTextViewCompoundDrawables(containerName[i], R.drawable.sms_icon, 0, 0, 0);
-                        break;
-
-                    default:
-                        break;
+                    if (viewCounter < 2)
+                    {
+                        widget.addView(R.id.last_contacted_row_1, view);
+                    }
+                    else
+                    {
+                        widget.addView(R.id.last_contacted_row_2, view);
+                    }
+                    viewCounter++;
                 }
-
             }
         }
 
-        public void addSmsContactBehaviour(int[] containerSms, final List<ContactInfo> result, int i, boolean clearClickListener)
+        private void updateMostContactedList(Context context, RemoteViews widget, List<ContactInfo> contactInfoList)
+        {
+            int viewCounter = 0;
+            for (ContactInfo contactInfo : contactInfoList)
+            {
+                RemoteViews view = getMostContactView(context, contactInfo);
+
+                if (view != null)
+                {
+                    if (viewCounter < 3)
+                    {
+                        widget.addView(R.id.most_contacted_row_1, view);
+                    }
+                    else
+                    {
+                        widget.addView(R.id.most_contacted_row_2, view);
+                    }
+                    viewCounter++;
+                }
+            }
+        }
+
+        private RemoteViews getRecentView(Context context, ContactInfo info)
+        {
+            RemoteViews recentRow = new RemoteViews(context.getPackageName(), R.layout.last_contacted_item);
+            setupView(recentRow, info);
+
+            return recentRow;
+        }
+
+        private RemoteViews getMostContactView(Context context, ContactInfo info)
+        {
+            RemoteViews mostContactRow = new RemoteViews(context.getPackageName(), R.layout.most_contacted_item);
+            setupView(mostContactRow, info);
+
+            return mostContactRow;
+        }
+
+        public void setupView(RemoteViews view, ContactInfo info)
+        {
+            updateImage(view, R.id.contact_photo, info.photoUri);
+            String contactName = TextUtils.isEmpty(info.name) ? "Unknown" : info.name;
+
+            view.setTextViewText(R.id.contact_name, contactName);
+            view.setTextViewText(R.id.contact_phone_number, "" + info.phoneNumber);
+
+            // open contact
+            addOpenContactBehaviour(view, info);
+
+            switch (info.getLastAction())
+            {
+                case CALL:
+                    // call contact
+                    addCallContactBehaviour(view, info, false);
+                    view.setTextViewCompoundDrawables(R.id.contact_phone_number, R.drawable.home_icon, 0, 0, 0);
+                    break;
+
+                case SMS:
+                    // sms contact
+                    addSmsContactBehaviour(view, info, false);
+                    view.setTextViewCompoundDrawables(R.id.contact_phone_number, R.drawable.sms_icon, 0, 0, 0);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        public void addSmsContactBehaviour(RemoteViews view, final ContactInfo contactInfo, boolean clearClickListener)
         {
             if (!clearClickListener)
             {
-                String uriSms = "smsto:" + result.get(i).phoneNumber;
+                String uriSms = "smsto:" + contactInfo.phoneNumber;
                 Intent intentSms = new Intent(Intent.ACTION_SENDTO);
                 intentSms.setData(Uri.parse(uriSms));
 
@@ -268,27 +303,27 @@ public class PeopleWidget extends AppWidgetProvider
                     }
                 }
                 PendingIntent pendingIntentSms = PendingIntent.getActivity(mContext, 0, intentSms, PendingIntent.FLAG_UPDATE_CURRENT);
-                mViews.setOnClickPendingIntent(containerSms[i], pendingIntentSms);
+                view.setOnClickPendingIntent(R.id.last_action, pendingIntentSms);
 
             }
             else
             {
-                mViews.setOnClickPendingIntent(containerSms[i], null);
+                view.setOnClickPendingIntent(R.id.last_action, null);
             }
         }
 
-        public void addCallContactBehaviour(int[] containerPhone, final List<ContactInfo> result, int i, boolean clearClickListener)
+        public void addCallContactBehaviour(RemoteViews view, final ContactInfo contactInfo, boolean clearClickListener)
         {
             if (!clearClickListener)
             {
-                String uriCall = "tel:" + result.get(i).phoneNumber;
+                String uriCall = "tel:" + contactInfo.phoneNumber;
                 Intent intentCall = new Intent(Intent.ACTION_CALL);
 
                 ComponentName comp = new ComponentName("com.android.phone", "com.android.phone.OutgoingCallBroadcaster");
                 intentCall.setComponent(comp);
                 intentCall.setData(Uri.parse(uriCall));
                 PendingIntent pendingIntentCall = PendingIntent.getActivity(mContext, 0, intentCall, PendingIntent.FLAG_UPDATE_CURRENT);
-                mViews.setOnClickPendingIntent(containerPhone[i], pendingIntentCall);
+                view.setOnClickPendingIntent(R.id.last_action, pendingIntentCall);
 
                 // String uriCall = "tel:" + result.get(i).phoneNumbers;
                 // Intent intentCall = new Intent(Intent.ACTION_CALL);
@@ -302,28 +337,21 @@ public class PeopleWidget extends AppWidgetProvider
             }
             else
             {
-                mViews.setOnClickPendingIntent(containerPhone[i], null);
+                view.setOnClickPendingIntent(R.id.last_action, null);
             }
         }
 
-        public void addOpenContactBehaviour(int[] containerImage, final List<ContactInfo> result, int i)
+        public void addOpenContactBehaviour(RemoteViews view, final ContactInfo contactInfo)
         {
-            if (!TextUtils.isEmpty(result.get(i).contactId))
+            if (!TextUtils.isEmpty(contactInfo.contactId))
             {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, "" + result.get(i).contactId));
-                PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0 /*
-                                                                                     * no
-                                                                                     * requestCode
-                                                                                     */, intent, PendingIntent.FLAG_UPDATE_CURRENT /*
-                                                                                                                                    * 0
-                                                                                                                                    * no
-                                                                                                                                    * flags
-                                                                                                                                    */);
-                mViews.setOnClickPendingIntent(containerImage[i], pendingIntent);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, "" + contactInfo.contactId));
+                PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                view.setOnClickPendingIntent(R.id.contact_photo, pendingIntent);
             }
             else
             {
-                mViews.setOnClickPendingIntent(containerImage[i], null);
+                view.setOnClickPendingIntent(R.id.contact_photo, null);
             }
         }
 
