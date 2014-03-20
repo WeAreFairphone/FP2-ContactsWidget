@@ -1,5 +1,9 @@
 package com.kwamecorp.peoplewidget.service;
 
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 import com.kwamecorp.peoplewidget.data.ContactInfo;
 import com.kwamecorp.peoplewidget.data.ContactInfo.LAST_ACTION;
 import com.kwamecorp.peoplewidget.data.PeopleManager;
@@ -88,7 +92,19 @@ public class CommunicationMonitorService extends Service implements CallListener
 
     public void processNumberCalled(String number, LAST_ACTION action)
     {
-        ContactInfo contact = ContactInfo.getContactFromPhoneNumber(this, number, action);
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        String nationalNumber = number;
+        try
+        {
+            PhoneNumber parsedNumber = phoneUtil.parse(number, "PT");
+            Log.d(TAG, "Nacional number " + phoneUtil.format(parsedNumber, PhoneNumberFormat.NATIONAL));
+            Log.d(TAG, "E164 number " + phoneUtil.format(parsedNumber, PhoneNumberFormat.E164));
+            nationalNumber = phoneUtil.format(parsedNumber, PhoneNumberFormat.NATIONAL);
+        } catch (NumberParseException e)
+        {
+            Log.e(TAG, "NumberParseException was thrown: " + e.toString());
+        }
+        ContactInfo contact = ContactInfo.getContactFromPhoneNumber(this, nationalNumber, action);
         PeopleManager.getInstance().contactUsed(contact);
 
         savePeopleWidgetData();

@@ -56,13 +56,13 @@
     <LinearLayout
         android:id="@+id/most_contacted_row_1"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="143dp"
         android:orientation="horizontal" />
 
     <LinearLayout
         android:id="@+id/most_contacted_row_2"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="143dp"
         android:orientation="horizontal" />
 
     <TextView

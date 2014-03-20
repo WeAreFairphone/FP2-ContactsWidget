@@ -1,9 +1,13 @@
 package com.kwamecorp.peoplewidget.data;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.PhoneLookup;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.text.ParseException;
@@ -31,8 +35,9 @@ public class ContactInfo
     private long mCounter;
     private Date mLastExecution;
     private LAST_ACTION mLastAction;
+    private int mNumberType;
 
-    public ContactInfo(String name, String photoUri, String lookup, String contactID, String phoneNumber)
+    public ContactInfo(String name, String photoUri, String lookup, String contactID, String phoneNumber, int numberType)
     {
         this.name = name;
         this.photoUri = photoUri;
@@ -42,6 +47,7 @@ public class ContactInfo
         this.mCounter = 0l;
         this.mLastExecution = null;
         this.mLastAction = null;
+        this.mNumberType = numberType;
     }
 
     public ContactInfo(String phoneNumber)
@@ -54,6 +60,7 @@ public class ContactInfo
         this.mCounter = 0l;
         this.mLastExecution = null;
         this.mLastAction = null;
+        this.mNumberType = Phone.TYPE_HOME;
     }
 
     public ContactInfo(Context context, String phoneNumber, long counter, Date lastExecution, String lastAction)
@@ -65,9 +72,21 @@ public class ContactInfo
         this.lookup = contact.lookup;
         this.contactId = contact.contactId;
         this.phoneNumber = contact.phoneNumber;
+        this.mNumberType = contact.mNumberType;
         this.mCounter = counter;
         this.mLastExecution = lastExecution;
         this.mLastAction = contact.getLastAction();
+    }
+
+    public String getNumberTypeAsString(Context context)
+    {
+        String numberTypeName = this.phoneNumber;
+        if (!TextUtils.isEmpty(this.contactId))
+        {
+            numberTypeName = Phone.getTypeLabel(context.getResources(), mNumberType, "").toString();
+        }
+
+        return numberTypeName;
     }
 
     private LAST_ACTION getLastActionFromString(String lastAction)
@@ -187,11 +206,11 @@ public class ContactInfo
         Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
 
         String[] projection = new String[] {
-                PhoneLookup.DISPLAY_NAME, PhoneLookup.PHOTO_URI, PhoneLookup.LOOKUP_KEY, PhoneLookup._ID, PhoneLookup.NUMBER,
+                PhoneLookup.DISPLAY_NAME, PhoneLookup.PHOTO_URI, PhoneLookup.TYPE, PhoneLookup.LOOKUP_KEY, PhoneLookup._ID, PhoneLookup.NUMBER,
         };
-
+        ContentResolver contentResolver = context.getContentResolver();
         String selection = PhoneLookup.NUMBER + " LIKE %" + number + "%";
-        Cursor cursor = context.getContentResolver().query(uri, projection, selection, null, null);
+        Cursor cursor = contentResolver.query(uri, projection, selection, null, null);
         ContactInfo contact = null;
         if (cursor != null && cursor.moveToNext())
         {
@@ -200,8 +219,11 @@ public class ContactInfo
             String lookup = cursor.getString(cursor.getColumnIndex(PhoneLookup.LOOKUP_KEY));
             String photoUri = cursor.getString(cursor.getColumnIndex(PhoneLookup.PHOTO_URI));
             String name = cursor.getString(cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME));
+            int type = cursor.getInt(cursor.getColumnIndex(PhoneLookup.TYPE));
+            Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
             String phonenumber = cursor.getString(cursor.getColumnIndex(PhoneLookup.NUMBER));
-            contact = new ContactInfo(name, photoUri, lookup, contactId, number);
+
+            contact = new ContactInfo(name, photoUri, lookup, contactId, number, type);
         }
 
         if (contact != null)

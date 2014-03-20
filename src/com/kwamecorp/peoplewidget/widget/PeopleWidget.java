@@ -81,7 +81,7 @@ public class PeopleWidget extends AppWidgetProvider
         }
         else
         {
-            view.setImageViewResource(viewId, android.R.drawable.sym_def_app_icon);
+            view.setImageViewResource(viewId, R.drawable.ic_contact_picture_holo_light);
         }
     }
 
@@ -251,7 +251,7 @@ public class PeopleWidget extends AppWidgetProvider
             String contactName = TextUtils.isEmpty(info.name) ? "Unknown" : info.name;
 
             view.setTextViewText(R.id.contact_name, contactName);
-            view.setTextViewText(R.id.contact_phone_number, "" + info.phoneNumber);
+            view.setTextViewText(R.id.contact_phone_number, info.getNumberTypeAsString(mContext));
 
             // open contact
             addOpenContactBehaviour(view, info);
