@@ -1,40 +1,9 @@
 <resources>
 
     <color name="black_overlay">#66000000</color>
+    <color name="transparent_white">#88FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="white_gray">#CFCFCF</color>
-    <color name="light_gray">#DFDFDF</color>
-    <color name="dark_gray">#FF7F7F7F</color>
-    <color name="kindof_gray">#6a6a6a</color>
-    <color name="black_gray">#3F3F3F</color>
-    <color name="light_blue">#3B5998</color>
-    <color name="mid_blue">#3B5998</color>
-    <color name="dark_blue">#193A7F</color>
-    <color name="steel_blue">#5CACEE</color>
-    <color name="yellow">#FFC125</color>
-    <color name="yellow2">#ffB014</color>
-    <color name="transparent">#00000000</color>
-    <color name="transparent_black">#90000000</color>
-    <color name="transparent_gray">#E4000000</color>
-    <color name="transparent_white">#88FFFFFF</color>
-    <color name="transparent_white2">#F0FFFFFF</color>
-    <color name="slate_old">#064477</color>
-    <color name="slate">#E4000000</color>
-    <color name="blue_gray">#13558d</color>
-    <color name="mm_logo_blue">#00acec</color>
-    <color name="dashboard_gray">#808080</color>
-    <color name="dashboard_gray2">#707070</color>
-    <color name="dashboard_gray3">#4B4A4A</color>
-    <color name="dashboard_gray4">#5C5A5A</color>
-    <color name="transparent_red">#88FF0000</color>
-    <color name="transparent_green">#8800FF00</color>
-    <color name="transparent_blue">#880000FF</color>
-    <color name="button_normal">#e8e8e8</color>
-    <color name="button_press">#9f9f9f</color>
-    <color name="action_bar">#FFFFFF</color>
-
-    <!-- for scroll letters -->
-    <color name="grey_box">#676767</color>
+    <color name="phone_number_color">#1be4cf</color>
 
 </resources>

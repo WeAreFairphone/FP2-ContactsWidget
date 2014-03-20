@@ -74,7 +74,7 @@ public class PeopleWidget extends AppWidgetProvider
 
     private void updateImage(RemoteViews view, final int viewId, final String photoUrl)
     {
-        if (photoUrl != null)
+        if (!TextUtils.isEmpty(photoUrl))
         {
             Bitmap bitmap = loadContactPhoto(photoUrl, mContext);
             view.setImageViewBitmap(viewId, bitmap);

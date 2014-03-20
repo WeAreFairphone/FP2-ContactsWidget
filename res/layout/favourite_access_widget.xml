@@ -46,52 +46,44 @@
 
     <TextView
         android:id="@+id/most_contacted_label"
+        style="@style/SubTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
         android:layout_margin="5dp"
-        android:shadowColor="@color/black"
-        android:shadowRadius="5"
-        android:text="@string/most_contacted_text_label"
-        android:textColor="@color/white"
-        android:textSize="15dp" />
+        android:text="@string/most_contacted_text_label" />
 
     <LinearLayout
         android:id="@+id/most_contacted_row_1"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:orientation="horizontal" />
 
     <LinearLayout
         android:id="@+id/most_contacted_row_2"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:orientation="horizontal" />
 
     <TextView
         android:id="@+id/last_contacted_label"
+        style="@style/SubTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
         android:layout_margin="5dp"
-        android:shadowColor="@color/black"
-        android:shadowRadius="5"
-        android:text="@string/last_contacted_text_label"
-        android:textColor="@color/white"
-        android:textSize="15dp" />
+        android:text="@string/last_contacted_text_label" />
 
     <LinearLayout
         android:id="@+id/last_contacted_row_1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="75dp"
         android:orientation="horizontal" />
 
     <LinearLayout
         android:id="@+id/last_contacted_row_2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="75dp"
         android:orientation="horizontal" />
 
 </LinearLayout>
