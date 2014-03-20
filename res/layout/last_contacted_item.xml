@@ -21,13 +21,13 @@
         <TextView
             android:id="@+id/contact_name"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="43dp"
             android:layout_gravity="left|bottom"
             android:layout_marginLeft="2dp"
             android:shadowColor="@color/black"
             android:shadowRadius="5"
             android:textColor="@color/white"
-            android:textSize="20dp" />
+            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/contact_phone_number"

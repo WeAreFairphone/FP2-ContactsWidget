@@ -10,8 +10,7 @@ public class SmsObserver extends ContentObserver
 {
 
     private static final String TAG = SmsObserver.class.getSimpleName();
-    public static final String CONTENT_SMS = "content://sms/outbox";
-    // public static final String CONTENT_SMS = "content://sms/sent";
+    public static final String CONTENT_SMS = "content://sms/sent";
 
     public static final int MESSAGE_TYPE_SENT = 2;
 
