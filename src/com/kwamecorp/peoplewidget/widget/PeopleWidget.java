@@ -75,9 +75,9 @@ public class PeopleWidget extends AppWidgetProvider
 
     private void updateImage(RemoteViews view, final int viewId, final String photoUrl)
     {
-        if (!TextUtils.isEmpty(photoUrl))
+        Bitmap bitmap = loadContactPhoto(photoUrl, mContext);
+        if (bitmap != null)
         {
-            Bitmap bitmap = loadContactPhoto(photoUrl, mContext);
             view.setImageViewBitmap(viewId, bitmap);
         }
         else
@@ -90,42 +90,43 @@ public class PeopleWidget extends AppWidgetProvider
     {
         Uri thumbUri;
         AssetFileDescriptor afd = null;
-
-        try
+        if (!TextUtils.isEmpty(photoData))
         {
-            thumbUri = Uri.parse(photoData);
-            /*
-             * Retrieves an AssetFileDescriptor object for the thumbnail URI
-             * using ContentResolver.openAssetFileDescriptor
-             */
-            afd = context.getContentResolver().openAssetFileDescriptor(thumbUri, "r");
-            /*
-             * Gets a file descriptor from the asset file descriptor. This
-             * object can be used across processes.
-             */
-            FileDescriptor fileDescriptor = afd.getFileDescriptor();
-            // Decode the photo file and return the result as a Bitmap
-            // If the file descriptor is valid
-            if (fileDescriptor != null)
+            try
             {
-                // Decodes the bitmap
-                Log.i(this.getClass().getSimpleName(), "Uri = " + thumbUri.toString());
-                return BitmapFactory.decodeFileDescriptor(fileDescriptor, null, null);
-            }
-            // If the file isn't found
-        } catch (FileNotFoundException e)
-        {
-
-        } finally
-        {
-
-            if (afd != null)
+                thumbUri = Uri.parse(photoData);
+                /*
+                 * Retrieves an AssetFileDescriptor object for the thumbnail URI
+                 * using ContentResolver.openAssetFileDescriptor
+                 */
+                afd = context.getContentResolver().openAssetFileDescriptor(thumbUri, "r");
+                /*
+                 * Gets a file descriptor from the asset file descriptor. This
+                 * object can be used across processes.
+                 */
+                FileDescriptor fileDescriptor = afd.getFileDescriptor();
+                // Decode the photo file and return the result as a Bitmap
+                // If the file descriptor is valid
+                if (fileDescriptor != null)
+                {
+                    // Decodes the bitmap
+                    Log.i(this.getClass().getSimpleName(), "Uri = " + thumbUri.toString());
+                    return BitmapFactory.decodeFileDescriptor(fileDescriptor, null, null);
+                }
+                // If the file isn't found
+            } catch (FileNotFoundException e)
             {
-                try
+                Log.e(TAG, e.getMessage());
+            } finally
+            {
+                if (afd != null)
                 {
-                    afd.close();
-                } catch (IOException e)
-                {
+                    try
+                    {
+                        afd.close();
+                    } catch (IOException e)
+                    {
+                    }
                 }
             }
         }
