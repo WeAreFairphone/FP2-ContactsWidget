@@ -35,6 +35,7 @@ public class PeopleWidget extends AppWidgetProvider
 {
 
     private static final String TAG = PeopleWidget.class.getSimpleName();
+    public static final boolean HIDE_SECOND_ROW = false;
 
     private RemoteViews mWidget;
     private Context mContext;
@@ -138,7 +139,6 @@ public class PeopleWidget extends AppWidgetProvider
 
     private class AsyncGetContacts extends AsyncTask<String, Void, List<ContactInfo>>
     {
-
         @Override
         protected List<ContactInfo> doInBackground(String... in)
         {
@@ -167,6 +167,12 @@ public class PeopleWidget extends AppWidgetProvider
             mWidget.removeAllViews(R.id.most_contacted_row_1);
             mWidget.removeAllViews(R.id.most_contacted_row_2);
 
+            if (!HIDE_SECOND_ROW)
+            {
+                mWidget.setViewVisibility(R.id.most_contacted_row_2, View.VISIBLE);
+                mWidget.setViewVisibility(R.id.last_contacted_row_2, View.VISIBLE);
+            }
+
             List<ContactInfo> mostContacted = new ArrayList<ContactInfo>(instance.getMostContacted());
             updateMostContactedList(mContext, mWidget, mostContacted);
 
@@ -194,11 +200,12 @@ public class PeopleWidget extends AppWidgetProvider
 
                 if (view != null)
                 {
-                    if (viewCounter < 2)
+                    int limit = PeopleManager.getInstance().getLastContactedLimit();
+                    if (viewCounter < (!HIDE_SECOND_ROW ? (limit / 2) : limit))
                     {
                         widget.addView(R.id.last_contacted_row_1, view);
                     }
-                    else
+                    else if (!HIDE_SECOND_ROW)
                     {
                         widget.addView(R.id.last_contacted_row_2, view);
                     }
@@ -216,11 +223,12 @@ public class PeopleWidget extends AppWidgetProvider
 
                 if (view != null)
                 {
-                    if (viewCounter < 3)
+                    int limit = PeopleManager.getInstance().getMostContactedLimit();
+                    if (viewCounter < (!HIDE_SECOND_ROW ? (limit / 2) : limit))
                     {
                         widget.addView(R.id.most_contacted_row_1, view);
                     }
-                    else
+                    else if (!HIDE_SECOND_ROW)
                     {
                         widget.addView(R.id.most_contacted_row_2, view);
                     }

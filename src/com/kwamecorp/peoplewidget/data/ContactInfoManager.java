@@ -15,13 +15,13 @@
  */
 package com.kwamecorp.peoplewidget.data;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import android.util.Log;
 
 /**
  * This class processes the count for the most contacted and the last contacted
@@ -29,7 +29,7 @@ import android.util.Log;
  */
 public class ContactInfoManager
 {
-
+    public static final boolean HIDE_SECOND_ROW = false;
     public static final int MOST_CONTACTED_MAX_COUNT_LIMIT = 6;
     public static final int LAST_CONTACTED_MAX_COUNT_LIMIT = 4;
     public static final int MINIMAL_COUNT = 2;
@@ -45,7 +45,14 @@ public class ContactInfoManager
     public ContactInfoManager()
     {
 
-        setUpLimits(MOST_CONTACTED_MAX_COUNT_LIMIT, LAST_CONTACTED_MAX_COUNT_LIMIT);
+        if (!HIDE_SECOND_ROW)
+        {
+            setUpLimits(MOST_CONTACTED_MAX_COUNT_LIMIT, LAST_CONTACTED_MAX_COUNT_LIMIT);
+        }
+        else
+        {
+            setUpLimits(MOST_CONTACTED_MAX_COUNT_LIMIT / 2, LAST_CONTACTED_MAX_COUNT_LIMIT / 2);
+        }
 
         _contactsInfoCache = new HashMap<String, ContactInfo>();
     }

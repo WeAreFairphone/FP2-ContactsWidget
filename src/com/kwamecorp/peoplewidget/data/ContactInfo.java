@@ -3,7 +3,6 @@ package com.kwamecorp.peoplewidget.data;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.PhoneLookup;
@@ -220,7 +219,7 @@ public class ContactInfo
             String photoUri = cursor.getString(cursor.getColumnIndex(PhoneLookup.PHOTO_URI));
             String name = cursor.getString(cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME));
             int type = cursor.getInt(cursor.getColumnIndex(PhoneLookup.TYPE));
-            Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
+            // Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
             String phonenumber = cursor.getString(cursor.getColumnIndex(PhoneLookup.NUMBER));
 
             contact = new ContactInfo(name, photoUri, lookup, contactId, number, type);
