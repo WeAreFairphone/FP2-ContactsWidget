@@ -36,6 +36,7 @@ public class PeopleWidget extends AppWidgetProvider
 
     private static final String TAG = PeopleWidget.class.getSimpleName();
     public static final boolean HIDE_SECOND_ROW = false;
+    public static final boolean SHOW_COUNTERS = false;
 
     private RemoteViews mWidget;
     private Context mContext;
@@ -258,7 +259,10 @@ public class PeopleWidget extends AppWidgetProvider
         {
             updateImage(view, R.id.contact_photo, info.photoUri);
             String contactName = TextUtils.isEmpty(info.name) ? "Unknown" : info.name;
-
+            if (SHOW_COUNTERS)
+            {
+                contactName = info.getCount() + " - " + contactName;
+            }
             view.setTextViewText(R.id.contact_name, contactName);
             view.setTextViewText(R.id.contact_phone_number, info.getNumberTypeAsString(mContext));
 
@@ -294,7 +298,6 @@ public class PeopleWidget extends AppWidgetProvider
 
                 PackageManager packageManager = mContext.getPackageManager();
                 List<ResolveInfo> list = packageManager.queryIntentActivities(intentSms, 0);
-                Log.i(this.getClass().getSimpleName(), "CENAS ->" + list.size());
                 for (ResolveInfo resolveInfo : list)
                 {
 
@@ -333,16 +336,6 @@ public class PeopleWidget extends AppWidgetProvider
                 intentCall.setData(Uri.parse(uriCall));
                 PendingIntent pendingIntentCall = PendingIntent.getActivity(mContext, 0, intentCall, PendingIntent.FLAG_UPDATE_CURRENT);
                 view.setOnClickPendingIntent(R.id.last_action, pendingIntentCall);
-
-                // String uriCall = "tel:" + result.get(i).phoneNumbers;
-                // Intent intentCall = new Intent(Intent.ACTION_CALL);
-                // intentCall.setData(Uri.parse(uriCall));
-                // PendingIntent pendingIntentCall =
-                // PendingIntent.getActivity(mContext,
-                // 0 /* no requestCode */, intentCall,
-                // PendingIntent.FLAG_UPDATE_CURRENT /*0 no flags*/);
-                // mViews.setOnClickPendingIntent(mContainerPhone[i],
-                // pendingIntentCall);
             }
             else
             {

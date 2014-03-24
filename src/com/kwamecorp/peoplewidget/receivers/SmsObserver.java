@@ -1,10 +1,16 @@
 package com.kwamecorp.peoplewidget.receivers;
 
+import com.kwamecorp.peoplewidget.service.CommunicationMonitorService;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
+
+import java.util.Date;
 
 public class SmsObserver extends ContentObserver
 {
@@ -33,10 +39,12 @@ public class SmsObserver extends ContentObserver
         String[] reqCols = new String[] {
                 "_id", "protocol", "type", "address", "body", "date"
         };
-        Cursor cursor = mContext.getContentResolver().query(Uri.parse(CONTENT_SMS), reqCols, null, null, "date desc");
-        while (cursor.moveToNext())
-        {
 
+        String selection = "date > " + getLastSentSmsTimestamp(mContext);
+
+        Cursor cursor = mContext.getContentResolver().query(Uri.parse(CONTENT_SMS), reqCols, selection, null, "date desc");
+        if (cursor != null && cursor.moveToNext())
+        {
             // Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
             String protocol = cursor.getString(cursor.getColumnIndex("protocol"));
             int type = cursor.getInt(cursor.getColumnIndex("type"));
@@ -44,20 +52,47 @@ public class SmsObserver extends ContentObserver
             Log.d(TAG, "Protocol: " + protocol + " - Type: " + type);
             // Only processing outgoing sms event & only when it
             // is sent successfully (available in SENT box).
-            if (protocol != null || type != MESSAGE_TYPE_SENT)
+            if (type == MESSAGE_TYPE_SENT)
             {
-                Log.d(TAG, "out");
-                // return;
+                Log.d(TAG, "Sms Sent");
+                int bodyColumn = cursor.getColumnIndex("body");
+                int addressColumn = cursor.getColumnIndex("address");
+                int dateColumn = cursor.getColumnIndex("date");
+                String to = cursor.getString(addressColumn);
+                String message = cursor.getString(bodyColumn);
+                long date = cursor.getLong(dateColumn);
+                Log.d(TAG, "To: " + to + " - Message: " + message + " - Date: " + date);
+                if (!TextUtils.isEmpty(to))
+                {
+                    setLastSentSmsTimestamp(mContext, date);
+                    mListener.onOutgoingSMS(to);
+                }
             }
-            int bodyColumn = cursor.getColumnIndex("body");
-            int addressColumn = cursor.getColumnIndex("address");
-            String to = cursor.getString(addressColumn);
-            String message = cursor.getString(bodyColumn);
-            Log.d(TAG, "To: " + to + " - Message: " + message);
-            if (to != null && !to.isEmpty())
-            {
-                mListener.onOutgoingSMS(to);
-            }
+
         }
+        else if (cursor != null)
+        {
+            cursor.close();
+        }
+    }
+
+    private long getLastSentSmsTimestamp(Context context)
+    {
+        Log.d(TAG, "getLastSentSmsTimestamp");
+        SharedPreferences prefs = context.getSharedPreferences(CommunicationMonitorService.PREFS_PEOPLE_WIDGET_CONTACTS_DATA, 0);
+
+        // for the first time use the current time minus 5 seconds or else the
+        // message will never be retrieved
+        long defaultTimestamp = new Date().getTime() - 5000;
+        return prefs.getLong(CommunicationMonitorService.LAST_SMS_TIMESTAMP, defaultTimestamp);
+    }
+
+    private void setLastSentSmsTimestamp(Context context, long timestamp)
+    {
+        SharedPreferences prefs = context.getSharedPreferences(CommunicationMonitorService.PREFS_PEOPLE_WIDGET_CONTACTS_DATA, 0);
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong(CommunicationMonitorService.LAST_SMS_TIMESTAMP, timestamp);
+        editor.commit();
     }
 }

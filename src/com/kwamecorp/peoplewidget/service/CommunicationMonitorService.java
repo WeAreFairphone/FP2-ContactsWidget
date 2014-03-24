@@ -39,6 +39,8 @@ public class CommunicationMonitorService extends Service implements CallListener
     public static final String LAUNCH_CONTACTS_APP = "LAUNCH_CONTACTS_APP";
     public static final String PEOPLE_WIDGET_RESET = "PEOPLE_WIDGET_RESET";
 
+    public static final String LAST_SMS_TIMESTAMP = "LAST_SENT_SMS_TIMESTAMP";
+
     private CallInterceptorReceiver mCallBroadcastReceiver;
     private ContentObserver smsObserver;
 

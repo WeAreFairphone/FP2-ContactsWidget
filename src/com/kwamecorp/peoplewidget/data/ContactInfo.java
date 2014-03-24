@@ -219,6 +219,7 @@ public class ContactInfo
             String photoUri = cursor.getString(cursor.getColumnIndex(PhoneLookup.PHOTO_URI));
             String name = cursor.getString(cursor.getColumnIndex(PhoneLookup.DISPLAY_NAME));
             int type = cursor.getInt(cursor.getColumnIndex(PhoneLookup.TYPE));
+
             // Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
             String phonenumber = cursor.getString(cursor.getColumnIndex(PhoneLookup.NUMBER));
 
@@ -236,6 +237,11 @@ public class ContactInfo
         }
         contact.setLastExecution(Calendar.getInstance().getTime());
         contact.setLastAction(action);
+
+        if (cursor != null)
+        {
+            cursor.close();
+        }
 
         return contact;
     }
