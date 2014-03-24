@@ -98,7 +98,7 @@ public class CommunicationMonitorService extends Service implements CallListener
         String nationalNumber = number;
         try
         {
-            PhoneNumber parsedNumber = phoneUtil.parse(number, "PT");
+            PhoneNumber parsedNumber = phoneUtil.parse(number, "");
             Log.d(TAG, "Nacional number " + phoneUtil.format(parsedNumber, PhoneNumberFormat.NATIONAL));
             Log.d(TAG, "E164 number " + phoneUtil.format(parsedNumber, PhoneNumberFormat.E164));
             nationalNumber = phoneUtil.format(parsedNumber, PhoneNumberFormat.NATIONAL);
