@@ -125,8 +125,6 @@ public class CentralActivity extends Activity
 
         // use this to start and trigger a service
         Intent i = new Intent(this, CommunicationMonitorService.class);
-        // potentially add data to the intent
-        i.putExtra(TAG, "Value to be used by the service");
         startService(i);
     }
 

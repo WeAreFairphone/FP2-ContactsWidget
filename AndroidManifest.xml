@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:icon="@mipmap/icon_launcher_ppl"
@@ -46,6 +47,11 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widgetinfo" />
+        </receiver>
+        <receiver android:name="com.kwamecorp.peoplewidget.receivers.BootCompletedIntentReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
         </receiver>
         <receiver android:name="com.kwamecorp.peoplewidget.receivers.OutgoingCallInterceptor" >
             <intent-filter android:priority="0" >
