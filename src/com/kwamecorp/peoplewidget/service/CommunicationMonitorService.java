@@ -13,6 +13,8 @@ import com.kwamecorp.peoplewidget.receivers.OutgoingCallInterceptor;
 import com.kwamecorp.peoplewidget.receivers.SmsObserver;
 import com.kwamecorp.peoplewidget.widget.PeopleWidget;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
@@ -106,6 +108,7 @@ public class CommunicationMonitorService extends Service implements CallListener
         {
             Log.e(TAG, "NumberParseException was thrown: " + e.toString());
         }
+        nationalNumber = nationalNumber.replaceAll("\\s+", "");
         ContactInfo contact = ContactInfo.getContactFromPhoneNumber(this, nationalNumber, action);
         PeopleManager.getInstance().contactUsed(contact);
 
@@ -244,5 +247,26 @@ public class CommunicationMonitorService extends Service implements CallListener
     {
         unregisterReceiver(mBCastAllContactsLauncher);
         unregisterReceiver(mBCastPeopleWidgetReset);
+    }
+
+    public static void startCommunicationMonitorService(Context context)
+    {
+        boolean isRunning = false;
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE))
+        {
+            if (CommunicationMonitorService.class.getName().equals(service.service.getClassName()))
+            {
+                isRunning = true;
+                break;
+            }
+        }
+
+        if (!isRunning)
+        {
+            Log.e(TAG, "Starting Communication Monitor Service...");
+            Intent i = new Intent(context, CommunicationMonitorService.class);
+            context.getApplicationContext().startService(i);
+        }
     }
 }

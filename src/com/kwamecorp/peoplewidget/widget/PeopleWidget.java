@@ -48,6 +48,8 @@ public class PeopleWidget extends AppWidgetProvider
 
         mWidget = new RemoteViews(context.getPackageName(), R.layout.favourite_access_widget);
         mContext = context;
+
+        CommunicationMonitorService.startCommunicationMonitorService(mContext);
         updateView();
     }
 
@@ -57,7 +59,8 @@ public class PeopleWidget extends AppWidgetProvider
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         mWidget = new RemoteViews(context.getPackageName(), R.layout.favourite_access_widget);
         mContext = context;
-        Log.i(this.getClass().getSimpleName(), "onUpdate()");
+
+        Log.i(TAG, "onUpdate()");
         updateView();
     }
 
@@ -111,7 +114,7 @@ public class PeopleWidget extends AppWidgetProvider
                 if (fileDescriptor != null)
                 {
                     // Decodes the bitmap
-                    Log.i(this.getClass().getSimpleName(), "Uri = " + thumbUri.toString());
+                    Log.i(TAG, "Uri = " + thumbUri.toString());
                     return BitmapFactory.decodeFileDescriptor(fileDescriptor, null, null);
                 }
                 // If the file isn't found
@@ -301,7 +304,7 @@ public class PeopleWidget extends AppWidgetProvider
                 for (ResolveInfo resolveInfo : list)
                 {
 
-                    Log.i(this.getClass().getSimpleName(), resolveInfo.activityInfo.packageName + " " + resolveInfo.activityInfo.name);
+                    Log.i(TAG, resolveInfo.activityInfo.packageName + " " + resolveInfo.activityInfo.name);
 
                     if (resolveInfo.activityInfo.name.equals("com.android.mms.ui.ComposeMessageActivity"))
                     {
