@@ -7,40 +7,41 @@
 
     <ImageView
         android:id="@+id/contact_photo"
-        android:layout_width="57dp"
-        android:layout_height="match_parent"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:scaleType="centerCrop" />
 
     <LinearLayout
         android:id="@+id/last_action"
-        android:layout_width="105dp"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_weight="1"
         android:background="@color/black"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:paddingBottom="7.3dp"
+        android:paddingLeft="7.3dp"
+        android:paddingRight="7.3dp"
+        android:paddingTop="5dp" >
 
         <TextView
             android:id="@+id/contact_name"
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_gravity="left|bottom"
-            android:layout_marginLeft="4dp"
-            android:shadowColor="@color/black"
-            android:shadowRadius="5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="-4dp"
+            android:lines="2"
             android:textColor="@color/white"
             android:textSize="17sp" />
 
         <TextView
             android:id="@+id/contact_phone_number"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_gravity="left"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:drawablePadding="5dp"
-            android:shadowColor="@color/black"
-            android:shadowRadius="5"
+            android:gravity="center_vertical"
             android:textColor="@color/phone_number_color"
-            android:textSize="13sp" />
+            android:textSize="11.3sp" />
     </LinearLayout>
 
 </LinearLayout>

@@ -2,45 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="105dp"
     android:layout_height="match_parent"
-    android:layout_margin="4.5dp"
+    android:layout_margin="5dp"
+    android:background="#33ff0000"
     android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/contact_photo"
         android:layout_width="match_parent"
-        android:layout_height="68dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:scaleType="centerCrop" />
 
     <LinearLayout
         android:id="@+id/last_action"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="wrap_content"
         android:background="@color/black"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:paddingBottom="7.3dp"
+        android:paddingLeft="7.3dp"
+        android:paddingRight="7.3dp"
+        android:paddingTop="5dp" >
 
         <TextView
             android:id="@+id/contact_name"
             android:layout_width="wrap_content"
-            android:layout_height="43dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="left|bottom"
-            android:layout_marginLeft="4dp"
-            android:shadowColor="@color/black"
-            android:shadowRadius="5"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="-4dp"
+            android:maxLines="2"
             android:textColor="@color/white"
             android:textSize="17sp" />
 
         <TextView
             android:id="@+id/contact_phone_number"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_gravity="left"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:drawablePadding="5dp"
-            android:shadowColor="@color/black"
-            android:shadowRadius="5"
+            android:includeFontPadding="false"
             android:textColor="@color/phone_number_color"
-            android:textSize="13sp" />
+            android:textSize="11.3sp" />
     </LinearLayout>
 
 </LinearLayout>
