@@ -18,7 +18,6 @@
         android:layout_weight="1"
         android:background="@color/black"
         android:orientation="vertical"
-        android:paddingBottom="7.3dp"
         android:paddingLeft="7.3dp"
         android:paddingRight="7.3dp"
         android:paddingTop="5dp" >
@@ -28,16 +27,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:lineSpacingExtra="-4dp"
+            android:lineSpacingExtra="0dp"
             android:lines="2"
             android:textColor="@color/white"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/contact_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:drawablePadding="5dp"
             android:gravity="center_vertical"
             android:textColor="@color/phone_number_color"

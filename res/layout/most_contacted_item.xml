@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|bottom"
             android:includeFontPadding="false"
-            android:lineSpacingExtra="-4dp"
+            android:lineSpacingExtra="0dp"
             android:maxLines="2"
             android:textColor="@color/white"
             android:textSize="17sp" />
