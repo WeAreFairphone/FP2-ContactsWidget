@@ -18,7 +18,6 @@ import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
@@ -50,7 +49,7 @@ public class PeopleWidget extends AppWidgetProvider
         mContext = context;
 
         CommunicationMonitorService.startCommunicationMonitorService(mContext);
-        updateView();
+        updateBoard();
     }
 
     @Override
@@ -61,20 +60,7 @@ public class PeopleWidget extends AppWidgetProvider
         mContext = context;
 
         Log.i(TAG, "onUpdate()");
-        updateView();
-    }
-
-    private void updateView()
-    {
-        Log.i(TAG, "updateView()");
         updateBoard();
-    }
-
-    private void updateBoard()
-    {
-        new AsyncGetContacts().execute(new String[] {
-            null
-        });
     }
 
     private void updateImage(RemoteViews view, final int viewId, final String photoUrl)
@@ -137,258 +123,234 @@ public class PeopleWidget extends AppWidgetProvider
         return null;
     }
 
-    private List<ContactInfo> getLocalFrequentContacts()
+    private void updateBoard()
     {
-        return new ArrayList<ContactInfo>();
+
+        ContactInfoManager instance = PeopleManager.getInstance();
+
+        // clear the current data
+        mWidget.removeAllViews(R.id.last_contacted_row_1);
+        mWidget.removeAllViews(R.id.last_contacted_row_2);
+
+        mWidget.removeAllViews(R.id.most_contacted_row_1);
+        mWidget.removeAllViews(R.id.most_contacted_row_2);
+
+        if (!HIDE_SECOND_ROW)
+        {
+            mWidget.setViewVisibility(R.id.most_contacted_row_2, View.VISIBLE);
+            mWidget.setViewVisibility(R.id.last_contacted_row_2, View.VISIBLE);
+        }
+
+        List<ContactInfo> mostContacted = new ArrayList<ContactInfo>(instance.getMostContacted());
+        updateMostContactedList(mContext, mWidget, mostContacted);
+
+        List<ContactInfo> lastContacted = new ArrayList<ContactInfo>(instance.getLastContacted());
+        updateLastContactedList(mContext, mWidget, lastContacted);
+
+        toggleResetButtonVisibility(mWidget, lastContacted, mostContacted);
+
+        int code = 0;
+        setupButtonClickIntents(mContext, code, mWidget);
+
+        ComponentName widget = new ComponentName(mContext, PeopleWidget.class);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
+        appWidgetManager.updateAppWidget(widget, null);
+        appWidgetManager.updateAppWidget(widget, mWidget);
+
     }
 
-    private class AsyncGetContacts extends AsyncTask<String, Void, List<ContactInfo>>
+    private void updateLastContactedList(Context context, RemoteViews widget, List<ContactInfo> contactInfoList)
     {
-        @Override
-        protected List<ContactInfo> doInBackground(String... in)
+        int viewCounter = 0;
+        for (ContactInfo contactInfo : contactInfoList)
         {
-            return makeMeRequest();
-        }
+            RemoteViews view = getRecentView(context, contactInfo);
 
-        private List<ContactInfo> makeMeRequest()
-        {
-            return getLocalFrequentContacts();
-        }
-
-        @Override
-        protected void onPostExecute(final List<ContactInfo> result)
-        {
-            if (result == null)
+            if (view != null)
             {
-                return;
-            }
-
-            ContactInfoManager instance = PeopleManager.getInstance();
-
-            // clear the current data
-            mWidget.removeAllViews(R.id.last_contacted_row_1);
-            mWidget.removeAllViews(R.id.last_contacted_row_2);
-
-            mWidget.removeAllViews(R.id.most_contacted_row_1);
-            mWidget.removeAllViews(R.id.most_contacted_row_2);
-
-            if (!HIDE_SECOND_ROW)
-            {
-                mWidget.setViewVisibility(R.id.most_contacted_row_2, View.VISIBLE);
-                mWidget.setViewVisibility(R.id.last_contacted_row_2, View.VISIBLE);
-            }
-
-            List<ContactInfo> mostContacted = new ArrayList<ContactInfo>(instance.getMostContacted());
-            updateMostContactedList(mContext, mWidget, mostContacted);
-
-            List<ContactInfo> lastContacted = new ArrayList<ContactInfo>(instance.getLastContacted());
-            updateLastContactedList(mContext, mWidget, lastContacted);
-
-            toggleResetButtonVisibility(mWidget, lastContacted, mostContacted);
-
-            int code = 0;
-            setupButtonClickIntents(mContext, code, mWidget);
-
-            ComponentName widget = new ComponentName(mContext, PeopleWidget.class);
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
-            appWidgetManager.updateAppWidget(widget, null);
-            appWidgetManager.updateAppWidget(widget, mWidget);
-
-        }
-
-        private void updateLastContactedList(Context context, RemoteViews widget, List<ContactInfo> contactInfoList)
-        {
-            int viewCounter = 0;
-            for (ContactInfo contactInfo : contactInfoList)
-            {
-                RemoteViews view = getRecentView(context, contactInfo);
-
-                if (view != null)
+                int limit = PeopleManager.getInstance().getLastContactedLimit();
+                if (viewCounter < (!HIDE_SECOND_ROW ? (limit / 2) : limit))
                 {
-                    int limit = PeopleManager.getInstance().getLastContactedLimit();
-                    if (viewCounter < (!HIDE_SECOND_ROW ? (limit / 2) : limit))
-                    {
-                        widget.addView(R.id.last_contacted_row_1, view);
-                    }
-                    else if (!HIDE_SECOND_ROW)
-                    {
-                        widget.addView(R.id.last_contacted_row_2, view);
-                    }
-                    viewCounter++;
+                    widget.addView(R.id.last_contacted_row_1, view);
+                }
+                else if (!HIDE_SECOND_ROW)
+                {
+                    widget.addView(R.id.last_contacted_row_2, view);
+                }
+                viewCounter++;
+            }
+        }
+    }
+
+    private void updateMostContactedList(Context context, RemoteViews widget, List<ContactInfo> contactInfoList)
+    {
+        int viewCounter = 0;
+        for (ContactInfo contactInfo : contactInfoList)
+        {
+            RemoteViews view = getMostContactView(context, contactInfo);
+
+            if (view != null)
+            {
+                int limit = PeopleManager.getInstance().getMostContactedLimit();
+                if (viewCounter < (!HIDE_SECOND_ROW ? (limit / 2) : limit))
+                {
+                    widget.addView(R.id.most_contacted_row_1, view);
+                }
+                else if (!HIDE_SECOND_ROW)
+                {
+                    widget.addView(R.id.most_contacted_row_2, view);
+                }
+                viewCounter++;
+            }
+        }
+    }
+
+    private RemoteViews getRecentView(Context context, ContactInfo info)
+    {
+        RemoteViews recentRow = new RemoteViews(context.getPackageName(), R.layout.last_contacted_item);
+        setupView(recentRow, info);
+
+        return recentRow;
+    }
+
+    private RemoteViews getMostContactView(Context context, ContactInfo info)
+    {
+        RemoteViews mostContactRow = new RemoteViews(context.getPackageName(), R.layout.most_contacted_item);
+        setupView(mostContactRow, info);
+
+        return mostContactRow;
+    }
+
+    public void setupView(RemoteViews view, ContactInfo info)
+    {
+        updateImage(view, R.id.contact_photo, info.photoUri);
+        String contactName = TextUtils.isEmpty(info.name) ? "Unknown" : info.name;
+        if (SHOW_COUNTERS)
+        {
+            contactName = info.getCount() + " - " + contactName;
+        }
+        view.setTextViewText(R.id.contact_name, contactName);
+        view.setTextViewText(R.id.contact_phone_number, info.getNumberTypeAsString(mContext));
+
+        // open contact
+        addOpenContactBehaviour(view, info);
+
+        switch (info.getLastAction())
+        {
+            case CALL:
+                // call contact
+                addCallContactBehaviour(view, info, false);
+                view.setTextViewCompoundDrawables(R.id.contact_phone_number, R.drawable.home_icon, 0, 0, 0);
+                break;
+
+            case SMS:
+                // sms contact
+                addSmsContactBehaviour(view, info, false);
+                view.setTextViewCompoundDrawables(R.id.contact_phone_number, R.drawable.sms_icon, 0, 0, 0);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public void addSmsContactBehaviour(RemoteViews view, final ContactInfo contactInfo, boolean clearClickListener)
+    {
+        if (!clearClickListener)
+        {
+            String uriSms = "smsto:" + contactInfo.phoneNumber;
+            Intent intentSms = new Intent(Intent.ACTION_SENDTO);
+            intentSms.setData(Uri.parse(uriSms));
+
+            PackageManager packageManager = mContext.getPackageManager();
+            List<ResolveInfo> list = packageManager.queryIntentActivities(intentSms, 0);
+            for (ResolveInfo resolveInfo : list)
+            {
+
+                Log.i(TAG, resolveInfo.activityInfo.packageName + " " + resolveInfo.activityInfo.name);
+
+                if (resolveInfo.activityInfo.name.equals("com.android.mms.ui.ComposeMessageActivity"))
+                {
+                    ComponentName comp = new ComponentName("com.android.mms", "com.android.mms.ui.ComposeMessageActivity");
+                    intentSms.setComponent(comp);
+                }
+                else if (resolveInfo.activityInfo.name.equals("com.android.mms.ui.ConversationComposer"))
+                {
+                    ComponentName comp = new ComponentName("com.android.mms", "com.android.mms.ui.ConversationComposer");
+                    intentSms.setComponent(comp);
                 }
             }
-        }
+            PendingIntent pendingIntentSms = PendingIntent.getActivity(mContext, 0, intentSms, PendingIntent.FLAG_UPDATE_CURRENT);
+            view.setOnClickPendingIntent(R.id.last_action, pendingIntentSms);
 
-        private void updateMostContactedList(Context context, RemoteViews widget, List<ContactInfo> contactInfoList)
+        }
+        else
         {
-            int viewCounter = 0;
-            for (ContactInfo contactInfo : contactInfoList)
-            {
-                RemoteViews view = getMostContactView(context, contactInfo);
-
-                if (view != null)
-                {
-                    int limit = PeopleManager.getInstance().getMostContactedLimit();
-                    if (viewCounter < (!HIDE_SECOND_ROW ? (limit / 2) : limit))
-                    {
-                        widget.addView(R.id.most_contacted_row_1, view);
-                    }
-                    else if (!HIDE_SECOND_ROW)
-                    {
-                        widget.addView(R.id.most_contacted_row_2, view);
-                    }
-                    viewCounter++;
-                }
-            }
+            view.setOnClickPendingIntent(R.id.last_action, null);
         }
+    }
 
-        private RemoteViews getRecentView(Context context, ContactInfo info)
+    public void addCallContactBehaviour(RemoteViews view, final ContactInfo contactInfo, boolean clearClickListener)
+    {
+        if (!clearClickListener)
         {
-            RemoteViews recentRow = new RemoteViews(context.getPackageName(), R.layout.last_contacted_item);
-            setupView(recentRow, info);
+            String uriCall = "tel:" + contactInfo.phoneNumber;
+            Intent intentCall = new Intent(Intent.ACTION_CALL);
 
-            return recentRow;
+            ComponentName comp = new ComponentName("com.android.phone", "com.android.phone.OutgoingCallBroadcaster");
+            intentCall.setComponent(comp);
+            intentCall.setData(Uri.parse(uriCall));
+            PendingIntent pendingIntentCall = PendingIntent.getActivity(mContext, 0, intentCall, PendingIntent.FLAG_UPDATE_CURRENT);
+            view.setOnClickPendingIntent(R.id.last_action, pendingIntentCall);
         }
-
-        private RemoteViews getMostContactView(Context context, ContactInfo info)
+        else
         {
-            RemoteViews mostContactRow = new RemoteViews(context.getPackageName(), R.layout.most_contacted_item);
-            setupView(mostContactRow, info);
-
-            return mostContactRow;
+            view.setOnClickPendingIntent(R.id.last_action, null);
         }
+    }
 
-        public void setupView(RemoteViews view, ContactInfo info)
+    public void addOpenContactBehaviour(RemoteViews view, final ContactInfo contactInfo)
+    {
+        if (!TextUtils.isEmpty(contactInfo.contactId))
         {
-            updateImage(view, R.id.contact_photo, info.photoUri);
-            String contactName = TextUtils.isEmpty(info.name) ? "Unknown" : info.name;
-            if (SHOW_COUNTERS)
-            {
-                contactName = info.getCount() + " - " + contactName;
-            }
-            view.setTextViewText(R.id.contact_name, contactName);
-            view.setTextViewText(R.id.contact_phone_number, info.getNumberTypeAsString(mContext));
-
-            // open contact
-            addOpenContactBehaviour(view, info);
-
-            switch (info.getLastAction())
-            {
-                case CALL:
-                    // call contact
-                    addCallContactBehaviour(view, info, false);
-                    view.setTextViewCompoundDrawables(R.id.contact_phone_number, R.drawable.home_icon, 0, 0, 0);
-                    break;
-
-                case SMS:
-                    // sms contact
-                    addSmsContactBehaviour(view, info, false);
-                    view.setTextViewCompoundDrawables(R.id.contact_phone_number, R.drawable.sms_icon, 0, 0, 0);
-                    break;
-
-                default:
-                    break;
-            }
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, "" + contactInfo.contactId));
+            PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            view.setOnClickPendingIntent(R.id.contact_photo, pendingIntent);
         }
-
-        public void addSmsContactBehaviour(RemoteViews view, final ContactInfo contactInfo, boolean clearClickListener)
+        else
         {
-            if (!clearClickListener)
-            {
-                String uriSms = "smsto:" + contactInfo.phoneNumber;
-                Intent intentSms = new Intent(Intent.ACTION_SENDTO);
-                intentSms.setData(Uri.parse(uriSms));
-
-                PackageManager packageManager = mContext.getPackageManager();
-                List<ResolveInfo> list = packageManager.queryIntentActivities(intentSms, 0);
-                for (ResolveInfo resolveInfo : list)
-                {
-
-                    Log.i(TAG, resolveInfo.activityInfo.packageName + " " + resolveInfo.activityInfo.name);
-
-                    if (resolveInfo.activityInfo.name.equals("com.android.mms.ui.ComposeMessageActivity"))
-                    {
-                        ComponentName comp = new ComponentName("com.android.mms", "com.android.mms.ui.ComposeMessageActivity");
-                        intentSms.setComponent(comp);
-                    }
-                    else if (resolveInfo.activityInfo.name.equals("com.android.mms.ui.ConversationComposer"))
-                    {
-                        ComponentName comp = new ComponentName("com.android.mms", "com.android.mms.ui.ConversationComposer");
-                        intentSms.setComponent(comp);
-                    }
-                }
-                PendingIntent pendingIntentSms = PendingIntent.getActivity(mContext, 0, intentSms, PendingIntent.FLAG_UPDATE_CURRENT);
-                view.setOnClickPendingIntent(R.id.last_action, pendingIntentSms);
-
-            }
-            else
-            {
-                view.setOnClickPendingIntent(R.id.last_action, null);
-            }
+            view.setOnClickPendingIntent(R.id.contact_photo, null);
         }
+    }
 
-        public void addCallContactBehaviour(RemoteViews view, final ContactInfo contactInfo, boolean clearClickListener)
+    private void toggleResetButtonVisibility(RemoteViews widget, List<ContactInfo> lastContacted, List<ContactInfo> mostContacted)
+    {
+        if (lastContacted.size() == 0 && mostContacted.size() == 0)
         {
-            if (!clearClickListener)
-            {
-                String uriCall = "tel:" + contactInfo.phoneNumber;
-                Intent intentCall = new Intent(Intent.ACTION_CALL);
-
-                ComponentName comp = new ComponentName("com.android.phone", "com.android.phone.OutgoingCallBroadcaster");
-                intentCall.setComponent(comp);
-                intentCall.setData(Uri.parse(uriCall));
-                PendingIntent pendingIntentCall = PendingIntent.getActivity(mContext, 0, intentCall, PendingIntent.FLAG_UPDATE_CURRENT);
-                view.setOnClickPendingIntent(R.id.last_action, pendingIntentCall);
-            }
-            else
-            {
-                view.setOnClickPendingIntent(R.id.last_action, null);
-            }
+            widget.setViewVisibility(R.id.buttonReset, View.GONE);
+            widget.setViewVisibility(R.id.buttonResetDisabled, View.VISIBLE);
         }
-
-        public void addOpenContactBehaviour(RemoteViews view, final ContactInfo contactInfo)
+        else
         {
-            if (!TextUtils.isEmpty(contactInfo.contactId))
-            {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, "" + contactInfo.contactId));
-                PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                view.setOnClickPendingIntent(R.id.contact_photo, pendingIntent);
-            }
-            else
-            {
-                view.setOnClickPendingIntent(R.id.contact_photo, null);
-            }
+            widget.setViewVisibility(R.id.buttonReset, View.VISIBLE);
+            widget.setViewVisibility(R.id.buttonResetDisabled, View.GONE);
         }
+    }
 
-        private void toggleResetButtonVisibility(RemoteViews widget, List<ContactInfo> lastContacted, List<ContactInfo> mostContacted)
-        {
-            if (lastContacted.size() == 0 && mostContacted.size() == 0)
-            {
-                widget.setViewVisibility(R.id.buttonReset, View.GONE);
-                widget.setViewVisibility(R.id.buttonResetDisabled, View.VISIBLE);
-            }
-            else
-            {
-                widget.setViewVisibility(R.id.buttonReset, View.VISIBLE);
-                widget.setViewVisibility(R.id.buttonResetDisabled, View.GONE);
-            }
-        }
+    private int setupButtonClickIntents(Context context, int code, RemoteViews widget)
+    {
+        // set up the all apps intent
+        Intent launchIntent = new Intent();
+        launchIntent.setAction(CommunicationMonitorService.LAUNCH_CONTACTS_APP);
 
-        private int setupButtonClickIntents(Context context, int code, RemoteViews widget)
-        {
-            // set up the all apps intent
-            Intent launchIntent = new Intent();
-            launchIntent.setAction(CommunicationMonitorService.LAUNCH_CONTACTS_APP);
+        PendingIntent launchPendingIntent = PendingIntent.getBroadcast(context, code++, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        widget.setOnClickPendingIntent(R.id.buttonLauncher, launchPendingIntent);
 
-            PendingIntent launchPendingIntent = PendingIntent.getBroadcast(context, code++, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            widget.setOnClickPendingIntent(R.id.buttonLauncher, launchPendingIntent);
-
-            // set up the reset apps intent
-            Intent resetIntent = new Intent();
-            resetIntent.setAction(CommunicationMonitorService.PEOPLE_WIDGET_RESET);
-            PendingIntent resetPendingIntent = PendingIntent.getBroadcast(context, code++, resetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            widget.setOnClickPendingIntent(R.id.buttonReset, resetPendingIntent);
-            return code;
-        }
+        // set up the reset apps intent
+        Intent resetIntent = new Intent();
+        resetIntent.setAction(CommunicationMonitorService.PEOPLE_WIDGET_RESET);
+        PendingIntent resetPendingIntent = PendingIntent.getBroadcast(context, code++, resetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        widget.setOnClickPendingIntent(R.id.buttonReset, resetPendingIntent);
+        return code;
     }
 }
