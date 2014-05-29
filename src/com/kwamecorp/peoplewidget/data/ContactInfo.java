@@ -9,8 +9,6 @@ import android.provider.ContactsContract.PhoneLookup;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -19,7 +17,6 @@ public class ContactInfo
     private static final String TAG = ContactInfo.class.getSimpleName();
 
     private static final String SEPARATOR = ",";
-    public static SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     public enum LAST_ACTION
     {
@@ -107,7 +104,7 @@ public class ContactInfo
         StringBuilder sb = new StringBuilder();
         sb.append(contact.getCount());
         sb.append(SEPARATOR);
-        sb.append(DATE_FORMATTER.format(contact.getLastExecution()));
+        sb.append(contact.getLastExecution().getTime());
         sb.append(SEPARATOR);
         sb.append(contact.getLastAction().name());
         return sb.toString();
@@ -132,11 +129,12 @@ public class ContactInfo
         String lastAction = null;
         if (splits != null && splits.length == 3)
         {
-            count = Long.parseLong(splits[0]);
             try
             {
-                lastExecution = DATE_FORMATTER.parse(splits[1]);
-            } catch (ParseException e)
+                count = Long.valueOf(splits[0]);
+                lastExecution = new Date();
+                lastExecution.setTime(Long.valueOf(splits[1]));
+            } catch (NumberFormatException e)
             {
                 e.printStackTrace();
                 lastExecution = Calendar.getInstance().getTime();
