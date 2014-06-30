@@ -325,16 +325,16 @@ public class PeopleWidget extends AppWidgetProvider
 
     private void toggleResetButtonVisibility(RemoteViews widget, List<ContactInfo> lastContacted, List<ContactInfo> mostContacted)
     {
-        if (lastContacted.size() == 0 && mostContacted.size() == 0)
-        {
-            widget.setViewVisibility(R.id.buttonReset, View.GONE);
-            widget.setViewVisibility(R.id.buttonResetDisabled, View.VISIBLE);
-        }
-        else
-        {
-            widget.setViewVisibility(R.id.buttonReset, View.VISIBLE);
-            widget.setViewVisibility(R.id.buttonResetDisabled, View.GONE);
-        }
+        // if (lastContacted.size() == 0 && mostContacted.size() == 0)
+        // {
+        // widget.setViewVisibility(R.id.buttonReset, View.GONE);
+        // widget.setViewVisibility(R.id.buttonResetDisabled, View.VISIBLE);
+        // }
+        // else
+        // {
+        // widget.setViewVisibility(R.id.buttonReset, View.VISIBLE);
+        // widget.setViewVisibility(R.id.buttonResetDisabled, View.GONE);
+        // }
     }
 
     private int setupButtonClickIntents(Context context, int code, RemoteViews widget)
@@ -347,10 +347,12 @@ public class PeopleWidget extends AppWidgetProvider
         widget.setOnClickPendingIntent(R.id.buttonLauncher, launchPendingIntent);
 
         // set up the reset apps intent
-        Intent resetIntent = new Intent();
-        resetIntent.setAction(CommunicationMonitorService.PEOPLE_WIDGET_RESET);
-        PendingIntent resetPendingIntent = PendingIntent.getBroadcast(context, code++, resetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        widget.setOnClickPendingIntent(R.id.buttonReset, resetPendingIntent);
+        // Intent resetIntent = new Intent();
+        // resetIntent.setAction(CommunicationMonitorService.PEOPLE_WIDGET_RESET);
+        // PendingIntent resetPendingIntent =
+        // PendingIntent.getBroadcast(context, code++, resetIntent,
+        // PendingIntent.FLAG_UPDATE_CURRENT);
+        // widget.setOnClickPendingIntent(R.id.buttonReset, resetPendingIntent);
         return code;
     }
 }
