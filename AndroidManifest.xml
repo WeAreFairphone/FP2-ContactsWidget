@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="16"
-        android:targetSdkVersion="17" />
+        android:minSdkVersion="21"
+        android:targetSdkVersion="21" />
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -46,7 +46,7 @@
             <!-- This specifies the widget provider info -->
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widgetinfo" />
+                android:resource="@xml/people_widget_info" />
         </receiver>
         <receiver android:name="com.kwamecorp.peoplewidget.receivers.BootCompletedIntentReceiver" >
             <intent-filter>
