@@ -2,11 +2,8 @@
 <resources>
 
     <string name="app_name">People widget</string>
-    <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">Please add the people widget to the home screen.</string>
-    <string name="reset">Reset</string>
     <string name="last_contacted_text_label">Recently Contacted</string>
     <string name="most_contacted_text_label">Most Contacted</string>
-    <string name="people_widget_reset_message">Reset contacts?</string>
 
 </resources>
