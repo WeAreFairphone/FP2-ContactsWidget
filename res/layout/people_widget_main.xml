@@ -49,7 +49,7 @@
         android:layout_height="80dp"
         android:orientation="horizontal"
         android:visibility="gone" />
-    
+
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -62,29 +62,6 @@
             android:layout_centerInParent="true"
             android:background="#00ffffff"
             android:src="@drawable/people_widget_all_contacts_button_icon" />
-
-        <!-- <Button
-            android:id="@+id/buttonReset"
-            style="@style/PeopleWidgetButtonReset"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="6.6dp"
-            android:layout_marginTop="13.5dp"
-            android:text="@string/reset"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/buttonResetDisabled"
-            style="@style/PeopleWidgetButtonReset"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="6.6dp"
-            android:layout_marginTop="13.5dp"
-            android:enabled="false"
-            android:text="@string/reset"
-            android:visibility="gone" /> -->
     </RelativeLayout>
 
 </LinearLayout>

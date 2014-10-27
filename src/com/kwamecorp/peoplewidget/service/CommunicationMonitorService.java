@@ -1,17 +1,8 @@
 package com.kwamecorp.peoplewidget.service;
 
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
-import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
-import com.kwamecorp.peoplewidget.data.ContactInfo;
-import com.kwamecorp.peoplewidget.data.ContactInfo.LAST_ACTION;
-import com.kwamecorp.peoplewidget.data.PeopleManager;
-import com.kwamecorp.peoplewidget.receivers.CallInterceptorReceiver;
-import com.kwamecorp.peoplewidget.receivers.CallListener;
-import com.kwamecorp.peoplewidget.receivers.OutgoingCallInterceptor;
-import com.kwamecorp.peoplewidget.receivers.SmsObserver;
-import com.kwamecorp.peoplewidget.widget.PeopleWidget;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
@@ -28,9 +19,18 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
+import com.kwamecorp.peoplewidget.data.ContactInfo;
+import com.kwamecorp.peoplewidget.data.ContactInfo.LAST_ACTION;
+import com.kwamecorp.peoplewidget.data.PeopleManager;
+import com.kwamecorp.peoplewidget.receivers.CallInterceptorReceiver;
+import com.kwamecorp.peoplewidget.receivers.CallListener;
+import com.kwamecorp.peoplewidget.receivers.OutgoingCallInterceptor;
+import com.kwamecorp.peoplewidget.receivers.SmsObserver;
+import com.kwamecorp.peoplewidget.widget.PeopleWidget;
 
 public class CommunicationMonitorService extends Service implements CallListener
 {
@@ -39,14 +39,11 @@ public class CommunicationMonitorService extends Service implements CallListener
     public static final String PREFS_PEOPLE_WIDGET_CONTACTS_DATA = "FAIRPHONE_PEOPLE_WIDGET_CONTACT_DB";
 
     public static final String LAUNCH_CONTACTS_APP = "LAUNCH_CONTACTS_APP";
-    public static final String PEOPLE_WIDGET_RESET = "PEOPLE_WIDGET_RESET";
 
     public static final String LAST_SMS_TIMESTAMP = "LAST_SENT_SMS_TIMESTAMP";
 
     private CallInterceptorReceiver mCallBroadcastReceiver;
     private ContentObserver smsObserver;
-
-    private BroadcastReceiver mBCastPeopleWidgetReset;
 
     private BroadcastReceiver mBCastAllContactsLauncher;
 
@@ -61,16 +58,8 @@ public class CommunicationMonitorService extends Service implements CallListener
     }
 
     @Override
-    public IBinder onBind(Intent intent)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public void onDestroy()
     {
-        // TODO Auto-generated method stub
         super.onDestroy();
         unregisterCommsListeners();
         clearPeopleWidgetBroadcastReceivers();
@@ -203,20 +192,7 @@ public class CommunicationMonitorService extends Service implements CallListener
 
     private void setupBroadcastReceivers()
     {
-        // launching the application
-        mBCastPeopleWidgetReset = new BroadcastReceiver()
-        {
-
-            @Override
-            public void onReceive(Context context, Intent intent)
-            {
-                Log.i(TAG, "Received a call from widget....Reset");
-                PeopleManager.getInstance().resetState();
-                savePeopleWidgetData();
-                updatePeopleWidgets();
-            }
-        };
-
+        // launching Contacts application
         mBCastAllContactsLauncher = new BroadcastReceiver()
         {
 
@@ -226,7 +202,7 @@ public class CommunicationMonitorService extends Service implements CallListener
                 String packageName = "com.android.contacts";
                 String className = "com.android.contacts.activities.PeopleActivity";
 
-                Log.i(TAG, "Received a call from widget....Launch App " + packageName + " - " + className);
+                Log.i(TAG, "Launch contacts app");
 
                 Intent launchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
 
@@ -238,15 +214,12 @@ public class CommunicationMonitorService extends Service implements CallListener
             }
         };
 
-        registerReceiver(mBCastPeopleWidgetReset, new IntentFilter(CommunicationMonitorService.PEOPLE_WIDGET_RESET));
-
         registerReceiver(mBCastAllContactsLauncher, new IntentFilter(CommunicationMonitorService.LAUNCH_CONTACTS_APP));
     }
 
     private void clearPeopleWidgetBroadcastReceivers()
     {
         unregisterReceiver(mBCastAllContactsLauncher);
-        unregisterReceiver(mBCastPeopleWidgetReset);
     }
 
     public static void startCommunicationMonitorService(Context context)
@@ -268,5 +241,12 @@ public class CommunicationMonitorService extends Service implements CallListener
             Intent i = new Intent(context, CommunicationMonitorService.class);
             context.getApplicationContext().startService(i);
         }
+    }
+
+    @Override
+    public IBinder onBind(Intent intent)
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

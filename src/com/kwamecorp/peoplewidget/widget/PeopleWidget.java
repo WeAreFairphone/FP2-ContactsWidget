@@ -1,10 +1,10 @@
 package com.kwamecorp.peoplewidget.widget;
 
-import com.kwamecorp.peoplewidget.R;
-import com.kwamecorp.peoplewidget.data.ContactInfo;
-import com.kwamecorp.peoplewidget.data.ContactInfoManager;
-import com.kwamecorp.peoplewidget.data.PeopleManager;
-import com.kwamecorp.peoplewidget.service.CommunicationMonitorService;
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -12,8 +12,6 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,11 +22,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.kwamecorp.peoplewidget.R;
+import com.kwamecorp.peoplewidget.data.ContactInfo;
+import com.kwamecorp.peoplewidget.data.ContactInfoManager;
+import com.kwamecorp.peoplewidget.data.PeopleManager;
+import com.kwamecorp.peoplewidget.service.CommunicationMonitorService;
 
 public class PeopleWidget extends AppWidgetProvider
 {
@@ -45,7 +43,7 @@ public class PeopleWidget extends AppWidgetProvider
     {
         super.onEnabled(context);
 
-        mWidget = new RemoteViews(context.getPackageName(), R.layout.favourite_access_widget);
+        mWidget = new RemoteViews(context.getPackageName(), R.layout.people_widget_main);
         mContext = context;
 
         CommunicationMonitorService.startCommunicationMonitorService(mContext);
@@ -56,7 +54,7 @@ public class PeopleWidget extends AppWidgetProvider
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
     {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        mWidget = new RemoteViews(context.getPackageName(), R.layout.favourite_access_widget);
+        mWidget = new RemoteViews(context.getPackageName(), R.layout.people_widget_main);
         mContext = context;
 
         Log.i(TAG, "onUpdate()");
@@ -146,8 +144,6 @@ public class PeopleWidget extends AppWidgetProvider
 
         List<ContactInfo> lastContacted = new ArrayList<ContactInfo>(instance.getLastContacted());
         updateLastContactedList(mContext, mWidget, lastContacted);
-
-        toggleResetButtonVisibility(mWidget, lastContacted, mostContacted);
 
         int code = 0;
         setupButtonClickIntents(mContext, code, mWidget);
@@ -262,27 +258,8 @@ public class PeopleWidget extends AppWidgetProvider
             Intent intentSms = new Intent(Intent.ACTION_SENDTO);
             intentSms.setData(Uri.parse(uriSms));
 
-            PackageManager packageManager = mContext.getPackageManager();
-            List<ResolveInfo> list = packageManager.queryIntentActivities(intentSms, 0);
-            for (ResolveInfo resolveInfo : list)
-            {
-
-                Log.i(TAG, resolveInfo.activityInfo.packageName + " " + resolveInfo.activityInfo.name);
-
-                if (resolveInfo.activityInfo.name.equals("com.android.mms.ui.ComposeMessageActivity"))
-                {
-                    ComponentName comp = new ComponentName("com.android.mms", "com.android.mms.ui.ComposeMessageActivity");
-                    intentSms.setComponent(comp);
-                }
-                else if (resolveInfo.activityInfo.name.equals("com.android.mms.ui.ConversationComposer"))
-                {
-                    ComponentName comp = new ComponentName("com.android.mms", "com.android.mms.ui.ConversationComposer");
-                    intentSms.setComponent(comp);
-                }
-            }
             PendingIntent pendingIntentSms = PendingIntent.getActivity(mContext, 0, intentSms, PendingIntent.FLAG_UPDATE_CURRENT);
             view.setOnClickPendingIntent(R.id.last_action, pendingIntentSms);
-
         }
         else
         {
@@ -296,10 +273,8 @@ public class PeopleWidget extends AppWidgetProvider
         {
             String uriCall = "tel:" + contactInfo.phoneNumber;
             Intent intentCall = new Intent(Intent.ACTION_CALL);
-
-            ComponentName comp = new ComponentName("com.android.phone", "com.android.phone.OutgoingCallBroadcaster");
-            intentCall.setComponent(comp);
             intentCall.setData(Uri.parse(uriCall));
+
             PendingIntent pendingIntentCall = PendingIntent.getActivity(mContext, 0, intentCall, PendingIntent.FLAG_UPDATE_CURRENT);
             view.setOnClickPendingIntent(R.id.last_action, pendingIntentCall);
         }
@@ -323,20 +298,6 @@ public class PeopleWidget extends AppWidgetProvider
         }
     }
 
-    private void toggleResetButtonVisibility(RemoteViews widget, List<ContactInfo> lastContacted, List<ContactInfo> mostContacted)
-    {
-        // if (lastContacted.size() == 0 && mostContacted.size() == 0)
-        // {
-        // widget.setViewVisibility(R.id.buttonReset, View.GONE);
-        // widget.setViewVisibility(R.id.buttonResetDisabled, View.VISIBLE);
-        // }
-        // else
-        // {
-        // widget.setViewVisibility(R.id.buttonReset, View.VISIBLE);
-        // widget.setViewVisibility(R.id.buttonResetDisabled, View.GONE);
-        // }
-    }
-
     private int setupButtonClickIntents(Context context, int code, RemoteViews widget)
     {
         // set up the all apps intent
@@ -345,14 +306,6 @@ public class PeopleWidget extends AppWidgetProvider
 
         PendingIntent launchPendingIntent = PendingIntent.getBroadcast(context, code++, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         widget.setOnClickPendingIntent(R.id.buttonLauncher, launchPendingIntent);
-
-        // set up the reset apps intent
-        // Intent resetIntent = new Intent();
-        // resetIntent.setAction(CommunicationMonitorService.PEOPLE_WIDGET_RESET);
-        // PendingIntent resetPendingIntent =
-        // PendingIntent.getBroadcast(context, code++, resetIntent,
-        // PendingIntent.FLAG_UPDATE_CURRENT);
-        // widget.setOnClickPendingIntent(R.id.buttonReset, resetPendingIntent);
         return code;
     }
 }
