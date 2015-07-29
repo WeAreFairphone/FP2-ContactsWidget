@@ -27,7 +27,13 @@ LOCAL_SRC_FILES := $(call all-java-files-under, src) $(call all-renderscript-fil
 LOCAL_PACKAGE_NAME := MyContactsWidget
 LOCAL_CERTIFICATE := platform
 
-#LOCAL_PRIVILEGED_MODULE := true
+LOCAL_PRIVILEGED_MODULE := true
+
+LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/res
+LOCAL_RESOURCE_DIR += prebuilts/sdk/current/support/v7/appcompat/res
+
+LOCAL_AAPT_FLAGS := --auto-add-overlay
+LOCAL_AAPT_FLAGS += --extra-packages android.support.v7.appcompat
 
 include $(BUILD_PACKAGE)
 

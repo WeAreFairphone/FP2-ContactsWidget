@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kwamecorp.peoplewidget"
+    package="com.fairphone.mycontacts"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -15,30 +15,47 @@
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
     <application
-        android:icon="@mipmap/icon_launcher_ppl"
+        android:icon="@drawable/ic_contact_no_photo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.kwamecorp.peoplewidget.CentralActivity"
+            android:name="com.fairphone.mycontacts.CentralActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/FullscreenTheme" >
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.fairphone.mycontacts.ContactDetailView"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"
+            android:excludeFromRecents="true"
+            android:autoRemoveFromRecents="true"
+            android:clearTaskOnLaunch="true"
+            android:launchMode="standard"
+            android:documentLaunchMode="never"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
 
         <service
-            android:name="com.kwamecorp.peoplewidget.service.CommunicationMonitorService"
-            android:icon="@drawable/people_widget_all_contacts_launcher"
+            android:name="com.fairphone.mycontacts.service.CommunicationMonitorService"
+            android:icon="@drawable/widget_my_contacts_icon"
             android:label="CommunicationMonitorService" >
         </service>
 
         <receiver
-            android:name="com.kwamecorp.peoplewidget.widget.PeopleWidget"
+            android:name="com.fairphone.mycontacts.widget.PeopleWidget"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -48,15 +65,9 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/people_widget_info" />
         </receiver>
-        <receiver android:name="com.kwamecorp.peoplewidget.receivers.BootCompletedIntentReceiver" >
+        <receiver android:name="com.fairphone.mycontacts.receivers.BootCompletedIntentReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name="com.kwamecorp.peoplewidget.receivers.OutgoingCallInterceptor" >
-            <intent-filter android:priority="0" >
-                <action android:name="android.intent.action.NEW_OUTGOING_CALL" >
-                </action>
             </intent-filter>
         </receiver>
     </application>

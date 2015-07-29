@@ -1,46 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="162dp"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
-    android:orientation="horizontal" >
+    >
 
     <ImageView
         android:id="@+id/contact_photo"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:scaleType="centerCrop" />
+        android:layout_width="@dimen/last_contact_picture_size"
+        android:layout_height="@dimen/last_contact_picture_size"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_vertical"/>
 
     <LinearLayout
         android:id="@+id/last_action"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_weight="1"
-        android:background="@color/black"
-        android:orientation="vertical"
-        android:paddingLeft="7.3dp"
-        android:paddingRight="7.3dp"
-        android:paddingTop="5dp" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16.67dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/last_contacted_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="bottom"
+            android:includeFontPadding="false"
+            android:textColor="#aadcf2"
+            android:lineSpacingExtra="0dp"
+            android:textSize="12.66sp"
+            android:lines="1"
+            android:layout_marginBottom="5dp"/>
 
         <TextView
             android:id="@+id/contact_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:includeFontPadding="false"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-light"
+            android:gravity="bottom"
             android:lineSpacingExtra="0dp"
-            android:lines="2"
+            android:includeFontPadding="false"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textStyle="normal"
+            android:maxLines="2"
+            android:textSize="24sp"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/contact_number_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="bold"
+            android:includeFontPadding="false"
+            android:gravity="bottom"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/contact_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:drawablePadding="5dp"
-            android:gravity="center_vertical"
-            android:textColor="@color/phone_number_color"
-            android:textSize="11.3sp" />
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:gravity="bottom"
+            android:textSize="16sp"
+            android:visibility="gone"/>
     </LinearLayout>
 
-</LinearLayout>
+</merge>

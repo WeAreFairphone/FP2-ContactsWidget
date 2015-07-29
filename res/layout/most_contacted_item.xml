@@ -1,49 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="105dp"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="165.33dp"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
-    android:background="#33ff0000"
-    android:orientation="vertical" >
+    android:id="@+id/contacted_item"
+    android:padding="7dp"
+    android:background="@drawable/contact_item_btn">
 
     <ImageView
         android:id="@+id/contact_photo"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scaleType="centerCrop" />
-
-    <LinearLayout
-        android:id="@+id/last_action"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/black"
-        android:orientation="vertical"
-        android:paddingBottom="7.3dp"
-        android:paddingLeft="7.3dp"
-        android:paddingRight="7.3dp"
-        android:paddingTop="5dp" >
+        android:layout_width="@dimen/most_contact_picture_size"
+        android:layout_height="@dimen/most_contact_picture_size"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_vertical"/>
 
         <TextView
             android:id="@+id/contact_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|bottom"
-            android:includeFontPadding="false"
-            android:lineSpacingExtra="0dp"
-            android:maxLines="2"
-            android:textColor="@color/white"
-            android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/contact_phone_number"
+            android:layout_marginLeft="65.33dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:drawablePadding="5dp"
+            android:ellipsize="end"
+            android:lineSpacingExtra="0dp"
+            android:fontFamily="sans-serif-medium"
+            android:layout_gravity="center_vertical"
             android:includeFontPadding="false"
-            android:textColor="@color/phone_number_color"
-            android:textSize="11.3sp" />
-    </LinearLayout>
+            android:maxLines="2"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
 
-</LinearLayout>
+</FrameLayout>

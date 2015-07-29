@@ -2,66 +2,100 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:paddingTop="30dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/last_contacted_label"
+        style="@style/MyContactsWidgetTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/recent_contacts"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+         />
+
+    <TextView
+        android:id="@+id/mostUsedContactsOOBEDescription"
+        style="@style/MyContactsWidgetSubTitle"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="12dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="@string/not_contacted_anyone_yet"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/recent_contacts_row_1"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="5dp"
+        android:padding="10dp"
+        android:background="@drawable/contact_item_btn"
+        android:orientation="horizontal">
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/last_contacted_item"
+            layout="@layout/last_contacted_item" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/most_contacted_label"
-        style="@style/SubTitle"
+        style="@style/MyContactsWidgetTitle"
         android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="4.5dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/most_contacted_text_label" />
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="@string/most_contacted"/>
+
 
     <LinearLayout
         android:id="@+id/most_contacted_row_1"
         android:layout_width="match_parent"
-        android:layout_height="143dp"
-        android:orientation="horizontal" />
+        android:layout_height="75dp"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"/>
 
     <LinearLayout
         android:id="@+id/most_contacted_row_2"
         android:layout_width="match_parent"
-        android:layout_height="143dp"
-        android:orientation="horizontal"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/last_contacted_label"
-        style="@style/SubTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="4.5dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/last_contacted_text_label" />
+        android:layout_height="75dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"/>
 
     <LinearLayout
-        android:id="@+id/last_contacted_row_1"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:orientation="horizontal" />
+        style="?android:attr/buttonBarButtonStyle"
+        android:id="@+id/contacts_launcher"
+        android:layout_width="314.66dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="17dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="@drawable/people_widget_contacts_button">
 
-    <LinearLayout
-        android:id="@+id/last_contacted_row_2"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:orientation="horizontal"
-        android:visibility="gone" />
-
-    <RelativeLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="66dp" >
-
-        <ImageButton
+        <TextView
             android:id="@+id/buttonLauncher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="#00ffffff"
-            android:src="@drawable/people_widget_all_contacts_button_icon" />
-    </RelativeLayout>
+            android:layout_gravity="center"
+            android:background="@null"
+            android:clickable="false"
+            android:focusable="false"
+            android:gravity="center"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:text="@string/contacts_title"
+            android:textSize="16sp"
+            android:textAllCaps="true"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/white"
+            android:drawableLeft="@drawable/ic_all_contacts"
+            android:drawablePadding="14dp" />
+    </LinearLayout>
 
 </LinearLayout>

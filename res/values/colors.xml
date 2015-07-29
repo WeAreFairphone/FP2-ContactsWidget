@@ -5,4 +5,72 @@
     <color name="black">#000000</color>
     <color name="phone_number_color">#1be4cf</color>
 
+    <color name="fp_light_blue">#aadcf2</color>
+    <color name="fp_blue">#2aa8e0</color>
+    <color name="fp_dark_blue">#123c59</color>
+
+    <drawable name="btn_color_transparent">#00000000</drawable>
+    <drawable name="btn_color_fp_light_blue">@color/fp_light_blue</drawable>
+    <drawable name="btn_color_fp_blue">@color/fp_blue</drawable>
+    <drawable name="btn_color_fp_blue_alpha_50">#7f2aa8e0</drawable>
+    <drawable name="btn_color_fp_blue_alpha_80">#cc2aa8e0</drawable>
+    <drawable name="btn_color_fp_dark_blue_alpha_80">#cc123c59</drawable>
+
+    <!-- Background colors for LetterTileDrawables. This set of colors is a subset of
+        https://spec.googleplex.com/quantumpalette#extended which passes Google Accessibility
+        Requirements for the color in question on white with >= 3.0 contrast. We used
+        http://leaverou.github.io/contrast-ratio/#white-on-%23db4437 to double-check the contrast.
+
+        These colors are also used by MaterialColorMapUtils to generate primary activity colors.
+    -->
+    <array name="letter_tile_colors">
+        <item>#ffd94a</item>
+        <item>#f286b6</item>
+        <item>#d2df43</item>
+        <item>#a0f7c4</item>
+        <item>#aadcf2</item>
+    </array>
+
+
+    <array name="letter_tile_colors_material">
+        <item>#DB4437</item>
+        <item>#E91E63</item>
+        <item>#9C27B0</item>
+        <item>#673AB7</item>
+        <item>#3F51B5</item>
+        <item>#4285F4</item>
+        <item>#039BE5</item>
+        <item>#0097A7</item>
+        <item>#009688</item>
+        <item>#0F9D58</item>
+        <item>#689F38</item>
+        <item>#EF6C00</item>
+        <item>#FF5722</item>
+        <item>#757575</item>
+    </array>
+
+    <!-- Darker versions of letter_tile_colors, two shades darker. These colors are used
+        for settings secondary activity colors. -->
+    <array name="letter_tile_colors_material_dark">
+        <item>#C53929</item>
+        <item>#C2185B</item>
+        <item>#7B1FA2</item>
+        <item>#512DA8</item>
+        <item>#303F9F</item>
+        <item>#3367D6</item>
+        <item>#0277BD</item>
+        <item>#006064</item>
+        <item>#00796B</item>
+        <item>#0B8043</item>
+        <item>#33691E</item>
+        <item>#E65100</item>
+        <item>#E64A19</item>
+        <item>#424242</item>
+    </array>
+
+
+    <color name="letter_tile_default_color">@color/fp_light_blue</color>
+
+    <color name="letter_tile_font_color">@color/white</color>
+
 </resources>

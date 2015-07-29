@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">People widget</string>
-    <string name="dummy_content">Please add the people widget to the home screen.</string>
-    <string name="last_contacted_text_label">Recently Contacted</string>
+    <string name="app_name">MyContacts</string>
+    <string name="last_contacted_text_label">Recent Contact</string>
     <string name="most_contacted_text_label">Most Contacted</string>
+    <string name="people_widget_name">My contacts</string>
+    <string name="recent_contacts">Recent contact</string>
+    <string name="most_contacted">Most contacted</string>
+    <string name="recent_contact_timestamp_label_now">Less than an hour ago</string>
+    <string name="recent_contact_timestamp_label_hours">{0} hours ago</string>
+    <string name="recent_contact_timestamp_label_hour">{0} hour ago</string>
+    <string name="recent_contact_timestamp_label_days">{0} days ago</string>
+    <string name="recent_contact_timestamp_label_day">{0} day ago</string>
+    <string name="contacts_title">Contacts</string>
+    <string name="not_contacted_anyone_yet">No contacts have been made yet.\nJust start using your phone and come back to this screen.</string>
+    <string name="view_contact">View contact</string>
+    <string name="create_contact">Create contact</string>
 
 </resources>
