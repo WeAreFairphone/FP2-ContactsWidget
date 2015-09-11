@@ -96,7 +96,6 @@ public class DbHelper extends SQLiteOpenHelper {
             }
 
             c.close();
-            db.close();
         }
 
         return communications;
@@ -123,7 +122,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
                 communication =  mapToModel(c);
                 c.close();
-                db.close();
                 return communication;
             }
         }
@@ -138,7 +136,6 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         if (db != null) {
             db.insert(TABLE_NAME, null, contentValues);
-            db.close();
         }
     }
 
