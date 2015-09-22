@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Mis contactos</string>
+    <string name="last_contacted_text_label">Último contacto</string>
+    <string name="most_contacted_text_label">Contactos frequentes</string>
+    <string name="people_widget_name">Mis contactos</string>
+    <string name="recent_contacts">Último contacto</string>
+    <string name="most_contacted">Contactos frequentes</string>
+    <string name="recent_contact_timestamp_label_now">Hace menos de una hora</string>
+    <string name="recent_contact_timestamp_label_hours">Hace {0} horas</string>
+    <string name="recent_contact_timestamp_label_hour">Hace {0} hora</string>
+    <string name="recent_contact_timestamp_label_days">Hace {0} días</string>
+    <string name="recent_contact_timestamp_label_day">Hace {0} día</string>
+    <string name="contacts_title">Contactos</string>
+    <string name="not_contacted_anyone_yet">Tus contactos aparecerán cuando empieces a usar tu teléfono para llamadas telefónicas.</string>
+    <string name="view_contact">Ver contacto</string>
+    <string name="create_contact">Crear contacto</string>
+
+</resources>

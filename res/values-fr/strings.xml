@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Mes contacts</string>
+    <string name="last_contacted_text_label">Dernier contact</string>
+    <string name="most_contacted_text_label">Les plus contactés</string>
+    <string name="people_widget_name">Mes contacts</string>
+    <string name="recent_contacts">Dernier contact</string>
+    <string name="most_contacted">Les plus contactés</string>
+    <string name="recent_contact_timestamp_label_now">Il y a moins d\'une heure</string>
+    <string name="recent_contact_timestamp_label_hours">Il y a {0} heures</string>
+    <string name="recent_contact_timestamp_label_hour">Il y a {0} heure</string>
+    <string name="recent_contact_timestamp_label_days">Il y a {0} jours</string>
+    <string name="recent_contact_timestamp_label_day">Il y a {0} jour</string>
+    <string name="contacts_title">Contacts</string>
+    <string name="not_contacted_anyone_yet">Vous n\'avez encore contacté personne. Commencez par utiliser votre téléphone et consultez cet écran ultérieurement.</string>
+    <string name="view_contact">Voir le contact</string>
+    <string name="create_contact">Créer un contact</string>
+
+</resources>

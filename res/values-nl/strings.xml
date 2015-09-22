@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Mijn contacten</string>
+    <string name="last_contacted_text_label">Meest recente contact</string>
+    <string name="most_contacted_text_label">Meest frequente contact</string>
+    <string name="people_widget_name">Mijn contacten</string>
+    <string name="recent_contacts">Meest recente contact</string>
+    <string name="most_contacted">Meest frequente contact</string>
+    <string name="recent_contact_timestamp_label_now">Minder dan een uur geleden</string>
+    <string name="recent_contact_timestamp_label_hours">{0} uur geleden</string>
+    <string name="recent_contact_timestamp_label_hour">{0} uur geleden</string>
+    <string name="recent_contact_timestamp_label_days">{0} dagen geleden</string>
+    <string name="recent_contact_timestamp_label_day">{0} dag geleden</string>
+    <string name="contacts_title">Contacten</string>
+    <string name="not_contacted_anyone_yet">Je hebt nog met niemand contact gehad. Gebruik je telefoon en check deze optie later nog een keer.</string>
+    <string name="view_contact">Bekijk contact</string>
+    <string name="create_contact">Maak nieuw contact</string>
+
+</resources>
