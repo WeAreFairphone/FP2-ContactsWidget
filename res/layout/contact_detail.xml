@@ -7,9 +7,10 @@
     <ImageView
         android:id="@+id/contact_photo"
         android:layout_gravity="center"
-        android:layout_width="360dp"
-        android:layout_height="360dp"
+        android:layout_width="440dp"
+        android:layout_height="440dp"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:scaleType="centerCrop"
         android:src="@drawable/contact_no_photo_cut"
         android:background="@color/fp_light_blue"/>
@@ -40,6 +41,7 @@
             android:textAllCaps="true"
             android:fontFamily="sans-serif-condensed"
             android:textColor="@color/white"
+            android:singleLine="true"
             android:drawableLeft="@drawable/ic_single_contact"
             android:drawablePadding="14dp"/>
     </LinearLayout>

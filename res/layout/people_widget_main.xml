@@ -25,6 +25,8 @@
         android:layout_marginTop="12dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
+        android:maxLines="8"
+        android:ellipsize="end"
         android:text="@string/not_contacted_anyone_yet"
         android:visibility="gone"/>
 
@@ -71,7 +73,7 @@
     <LinearLayout
         style="?android:attr/buttonBarButtonStyle"
         android:id="@+id/contacts_launcher"
-        android:layout_width="314.66dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="17dp"
         android:paddingLeft="5dp"
@@ -90,6 +92,7 @@
             android:minHeight="0dp"
             android:minWidth="0dp"
             android:text="@string/contacts_title"
+            android:singleLine="true"
             android:textSize="16sp"
             android:textAllCaps="true"
             android:fontFamily="sans-serif-condensed"
