@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="165.33dp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0px"
+    android:layout_weight="1"
     android:layout_height="match_parent"
     android:id="@+id/contacted_item"
-    android:padding="7dp"
     android:background="@drawable/contact_item_btn">
 
     <ImageView
         android:id="@+id/contact_photo"
+        android:layout_alignParentLeft="true"
         android:layout_width="@dimen/most_contact_picture_size"
         android:layout_height="@dimen/most_contact_picture_size"
+        android:layout_marginLeft="7dp"
         android:scaleType="centerCrop"
-        android:layout_gravity="center_vertical"/>
+        android:layout_centerVertical="true"/>
 
         <TextView
             android:id="@+id/contact_name"
-            android:layout_marginLeft="65.33dp"
+            android:layout_toRightOf="@id/contact_photo"
+            android:layout_marginLeft="5.33dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:ellipsize="end"
             android:lineSpacingExtra="0dp"
             android:fontFamily="sans-serif-medium"
@@ -27,4 +31,4 @@
             android:textColor="@color/white"
             android:textSize="16sp"/>
 
-</FrameLayout>
+</RelativeLayout>

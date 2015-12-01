@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">My Contacts</string>
     <string name="last_contacted_text_label">Last Contact</string>
     <string name="most_contacted_text_label">Most Contacted</string>
