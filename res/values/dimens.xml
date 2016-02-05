@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="last_contact_picture_size">131dp</dimen>
-    <dimen name="most_contact_picture_size">66dp</dimen>
+    <dimen name="last_contact_picture_size">119.33dp</dimen>
+    <dimen name="most_contact_picture_size">60dp</dimen>
 
 
 
