@@ -76,7 +76,7 @@ public class SmsObserver extends ContentObserver
                         }
                     }
             } catch (RuntimeException e) {
-                Log.wtf(TAG, "Ex" + e.toString());
+                Log.e(TAG, "Ex" + e.toString());
             }finally {
                 cursor.close();
             }

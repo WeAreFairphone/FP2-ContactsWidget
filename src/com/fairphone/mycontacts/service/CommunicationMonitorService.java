@@ -169,7 +169,7 @@ public class CommunicationMonitorService extends Service implements CallListener
 
         PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
 
-        Log.wtf(TAG, phoneNumber);
+        Log.d(TAG, phoneNumber);
         try
         {
             PhoneNumber parsedNumber = phoneUtil.parse(numberToValidate, null);
@@ -181,7 +181,7 @@ public class CommunicationMonitorService extends Service implements CallListener
             Log.e(TAG, "NumberParseException was thrown: " + e.toString());
         }
         phoneNumber = phoneNumber.replaceAll("\\s+", "");
-        Log.wtf(TAG, "Number after replace " + phoneNumber);
+        Log.d(TAG, "Number after replace " + phoneNumber);
 
         return phoneNumber;
     }
