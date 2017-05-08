@@ -3,6 +3,7 @@
     android:initialLayout="@layout/people_widget_main"
     android:minHeight="424dp"
     android:minWidth="300dp"
+    android:minResizeHeight="212dp"
     android:previewImage="@drawable/widget_my_contacts_icon"
     android:updatePeriodMillis="1800000" 
     android:resizeMode="vertical">
