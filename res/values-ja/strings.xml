@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Contacts</string>
+    <string name="last_contacted_text_label">最後の連絡先</string>
+    <string name="most_contacted_text_label">最も連絡する先</string>
+    <string name="people_widget_name">My contacts</string>
+    <string name="recent_contacts">最後の連絡先</string>
+    <string name="most_contacted">最も連絡する先</string>
+    <string name="recent_contact_timestamp_label_now">1 時間以内</string>
+    <string name="recent_contact_timestamp_label_hours">{0} 時間前</string>
+    <string name="recent_contact_timestamp_label_hour">{0} 時間前</string>
+    <string name="recent_contact_timestamp_label_days">{0} 日前</string>
+    <string name="recent_contact_timestamp_label_day">{0} 日前</string>
+    <string name="contacts_title">連絡先</string>
+    <string name="not_contacted_anyone_yet">まだ誰にも連絡していません。 電話を使い始めたら、後でもう一度この画面を確認してください。</string>
+    <string name="view_contact">連絡先を表示</string>
+    <string name="create_contact">連絡先を作成</string>
+</resources>
