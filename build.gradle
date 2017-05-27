@@ -25,7 +25,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.fairphone.mycontacts"
+        applicationId "community.fairphone.mycontacts"
         minSdkVersion 17
         targetSdkVersion 21
 
