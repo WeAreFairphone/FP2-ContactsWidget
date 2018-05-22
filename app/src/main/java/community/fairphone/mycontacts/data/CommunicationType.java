@@ -1,4 +1,4 @@
-package com.fairphone.mycontacts.data;
+package community.fairphone.mycontacts.data;
 
 /**
  * Created by kwamecorp on 5/29/15.

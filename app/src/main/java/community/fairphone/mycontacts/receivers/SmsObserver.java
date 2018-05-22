@@ -1,7 +1,7 @@
-package com.fairphone.mycontacts.receivers;
+package community.fairphone.mycontacts.receivers;
 
-import com.fairphone.mycontacts.service.CallListener;
-import com.fairphone.mycontacts.service.CommunicationMonitorService;
+import community.fairphone.mycontacts.service.CallListener;
+import community.fairphone.mycontacts.service.CommunicationMonitorService;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,8 +10,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
-
-import java.util.Date;
 
 public class SmsObserver extends ContentObserver
 {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fairphone.mycontacts" >
+    package="community.fairphone.mycontacts" >
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.fairphone.mycontacts.CentralActivity"
+            android:name="community.fairphone.mycontacts.CentralActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" >
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.fairphone.mycontacts.ContactDetailView"
+            android:name="community.fairphone.mycontacts.ContactDetailView"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
@@ -43,13 +43,13 @@
         </activity>
 
         <service
-            android:name="com.fairphone.mycontacts.service.CommunicationMonitorService"
+            android:name="community.fairphone.mycontacts.service.CommunicationMonitorService"
             android:icon="@drawable/widget_my_contacts_icon"
             android:label="CommunicationMonitorService" >
         </service>
 
         <receiver
-            android:name="com.fairphone.mycontacts.widget.PeopleWidget"
+            android:name="community.fairphone.mycontacts.widget.PeopleWidget"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -59,7 +59,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/people_widget_info" />
         </receiver>
-        <receiver android:name="com.fairphone.mycontacts.receivers.BootCompletedIntentReceiver" >
+        <receiver android:name="community.fairphone.mycontacts.receivers.BootCompletedIntentReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

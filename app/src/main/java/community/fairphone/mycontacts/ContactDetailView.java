@@ -1,21 +1,19 @@
-package com.fairphone.mycontacts;
+package community.fairphone.mycontacts;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.fairphone.mycontacts.data.ContactDetails;
-import com.fairphone.mycontacts.utils.LetterTileDrawable;
-import com.fairphone.mycontacts.widget.PeopleWidget;
+import community.fairphone.mycontacts.data.ContactDetails;
+import community.fairphone.mycontacts.utils.LetterTileDrawable;
+import community.fairphone.mycontacts.widget.PeopleWidget;
 
 public class ContactDetailView extends Activity {
 	private static final String TAG = ContactDetailView.class.getSimpleName();

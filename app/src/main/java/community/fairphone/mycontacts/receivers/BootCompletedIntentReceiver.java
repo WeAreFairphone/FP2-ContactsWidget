@@ -1,6 +1,6 @@
-package com.fairphone.mycontacts.receivers;
+package community.fairphone.mycontacts.receivers;
 
-import com.fairphone.mycontacts.service.CommunicationMonitorService;
+import community.fairphone.mycontacts.service.CommunicationMonitorService;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

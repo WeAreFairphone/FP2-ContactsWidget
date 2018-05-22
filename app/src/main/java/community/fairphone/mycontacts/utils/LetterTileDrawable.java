@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fairphone.mycontacts.utils;
+package community.fairphone.mycontacts.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -22,24 +22,17 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.fairphone.mycontacts.R;
+import community.fairphone.mycontacts.R;
 
 import junit.framework.Assert;
-
-import org.w3c.dom.Text;
 
 /**
  * A drawable that encapsulates all the functionality needed to display a letter tile to

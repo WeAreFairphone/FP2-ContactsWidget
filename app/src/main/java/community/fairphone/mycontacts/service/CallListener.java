@@ -1,4 +1,4 @@
-package com.fairphone.mycontacts.service;
+package community.fairphone.mycontacts.service;
 
 import android.net.Uri;
 

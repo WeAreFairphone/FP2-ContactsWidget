@@ -1,4 +1,4 @@
-package com.fairphone.mycontacts.service;
+package community.fairphone.mycontacts.service;
 
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
@@ -11,15 +11,15 @@ import android.os.IBinder;
 import android.provider.ContactsContract;
 import android.util.Log;
 
-import com.fairphone.mycontacts.data.CommunicationModel;
-import com.fairphone.mycontacts.data.CommunicationType;
-import com.fairphone.mycontacts.data.ContactDetails;
+import community.fairphone.mycontacts.data.CommunicationModel;
+import community.fairphone.mycontacts.data.CommunicationType;
+import community.fairphone.mycontacts.data.ContactDetails;
 
-import com.fairphone.mycontacts.receivers.ContactChangedObserver;
-import com.fairphone.mycontacts.data.ContactDetailsManager;
-import com.fairphone.mycontacts.receivers.OutgoingCallInterceptor;
-import com.fairphone.mycontacts.receivers.SmsObserver;
-import com.fairphone.mycontacts.widget.PeopleWidget;
+import community.fairphone.mycontacts.receivers.ContactChangedObserver;
+import community.fairphone.mycontacts.data.ContactDetailsManager;
+import community.fairphone.mycontacts.receivers.OutgoingCallInterceptor;
+import community.fairphone.mycontacts.receivers.SmsObserver;
+import community.fairphone.mycontacts.widget.PeopleWidget;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;

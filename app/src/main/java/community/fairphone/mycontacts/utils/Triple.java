@@ -1,4 +1,4 @@
-package com.fairphone.mycontacts.utils;
+package community.fairphone.mycontacts.utils;
 
 public class Triple<F,S,T> {
 	public F first;

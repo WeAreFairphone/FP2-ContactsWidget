@@ -1,4 +1,4 @@
-package com.fairphone.mycontacts.data;
+package community.fairphone.mycontacts.data;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -7,11 +7,6 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
-
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber;
-
-import java.util.Calendar;
 
 
 /**
