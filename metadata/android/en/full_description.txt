@@ -1,0 +1,7 @@
+The <strong>Fairphone Recent Contacts Widget</strong> was included in official Android 5 OSes for the Fairphone 2 smartphone, both Fairphone OS and Fairphone Open.
+
+Your most important contacts should always be within your reach. Recent Contacts Widget lets you see your recently and most called contacts in one overview from your homescreen, and it lets you make direct phone calls straight from the widget itself without launching the dialer app first.
+
+Fairphone stopped the development of some Fairphone specific apps when the Fairphone 2 was updated to Android 6 "Marshmallow". Since they are open source, the WeAreFairphone community make them available for those users who want to keep the original Fairphone experience.
+
+You may want to take a look at Fairphone's <a href="https://f-droid.org/packages/community.fairphone.clock">Clock</a> widget and <a href="https://f-droid.org/packages/community.fairphone.fplauncher3/">Fairphone Launcher 3</a> too.
