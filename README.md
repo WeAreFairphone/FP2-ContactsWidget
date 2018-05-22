@@ -16,6 +16,10 @@ Fairphone stopped the development of some Fairphone-specific apps when the Fairp
 
 You may want to take a look at Fairphone's [Clock][wearefairphone-clock] widget and [Fairphone Launcher 3][wearefairphone-launcher] too.
 
+## Screenshots
+
+![Recent Contacts Widget in action](https://www.fairphone.com/wp-content/uploads/2016/01/Contacts3.gif)
+
 
 
 [fairphone2]: https://en.wikipedia.org/wiki/Fairphone_2 "Fairphone 2 - Wikipedia"
