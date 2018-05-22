@@ -1,11 +1,8 @@
-package com.fairphone.mycontacts.receivers;
+package community.fairphone.mycontacts.receivers;
 
 import android.database.ContentObserver;
-import android.net.Uri;
-import android.os.Handler;
-import android.util.Log;
 
-import com.fairphone.mycontacts.service.CallListener;
+import community.fairphone.mycontacts.service.CallListener;
 
 /**
  * Created by kwamecorp on 6/15/15.

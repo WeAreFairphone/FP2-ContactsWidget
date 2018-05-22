@@ -1,11 +1,11 @@
-package com.fairphone.mycontacts.view;
+package community.fairphone.mycontacts.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.fairphone.mycontacts.R;
+import community.fairphone.mycontacts.R;
 
 public class SquareImageView extends ImageView {
     private final boolean widthBasedSquare;

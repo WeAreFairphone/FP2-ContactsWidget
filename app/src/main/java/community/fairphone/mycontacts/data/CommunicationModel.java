@@ -1,4 +1,4 @@
-package com.fairphone.mycontacts.data;
+package community.fairphone.mycontacts.data;
 
 import android.util.Log;
 

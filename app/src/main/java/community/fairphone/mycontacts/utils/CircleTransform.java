@@ -1,4 +1,4 @@
-package com.fairphone.mycontacts.utils;
+package community.fairphone.mycontacts.utils;
 
 /**
  * Created by kwamecorp on 6/8/15.

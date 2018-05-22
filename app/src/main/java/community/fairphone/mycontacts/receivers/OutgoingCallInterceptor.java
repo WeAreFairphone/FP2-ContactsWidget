@@ -1,11 +1,11 @@
-package com.fairphone.mycontacts.receivers;
+package community.fairphone.mycontacts.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.fairphone.mycontacts.service.CallListener;
+import community.fairphone.mycontacts.service.CallListener;
 
 public class OutgoingCallInterceptor extends BroadcastReceiver
 {

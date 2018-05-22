@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black">
-    <com.fairphone.mycontacts.view.SquareImageView
+    <community.fairphone.mycontacts.view.SquareImageView
         android:id="@+id/contact_photo"
         android:layout_gravity="center"
         android:layout_width="match_parent"

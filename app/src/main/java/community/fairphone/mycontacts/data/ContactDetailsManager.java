@@ -1,21 +1,18 @@
-package com.fairphone.mycontacts.data;
+package community.fairphone.mycontacts.data;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Pair;
 
-import com.fairphone.mycontacts.utils.Triple;
+import community.fairphone.mycontacts.utils.Triple;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by kwamecorp on 6/1/15.

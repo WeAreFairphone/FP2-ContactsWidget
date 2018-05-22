@@ -1,4 +1,4 @@
-package com.fairphone.mycontacts.widget;
+package community.fairphone.mycontacts.widget;
 
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
@@ -21,18 +20,17 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import com.fairphone.mycontacts.ContactDetailView;
-import com.fairphone.mycontacts.R;
-import com.fairphone.mycontacts.data.ContactDetails;
-import com.fairphone.mycontacts.data.ContactDetailsManager;
-import com.fairphone.mycontacts.service.CommunicationMonitorService;
-import com.fairphone.mycontacts.utils.CircleTransform;
-import com.fairphone.mycontacts.utils.LetterTileDrawable;
+import community.fairphone.mycontacts.ContactDetailView;
+import community.fairphone.mycontacts.R;
+import community.fairphone.mycontacts.data.ContactDetails;
+import community.fairphone.mycontacts.data.ContactDetailsManager;
+import community.fairphone.mycontacts.service.CommunicationMonitorService;
+import community.fairphone.mycontacts.utils.CircleTransform;
+import community.fairphone.mycontacts.utils.LetterTileDrawable;
 
 public class PeopleWidget extends AppWidgetProvider
 {
