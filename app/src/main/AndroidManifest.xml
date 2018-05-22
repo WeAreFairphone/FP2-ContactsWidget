@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fairphone.mycontacts"
-    android:versionCode="3"
-    android:versionName="2.1"
-    android:installLocation="internalOnly" >
-
-    <uses-sdk
-        android:minSdkVersion="17"
-        android:targetSdkVersion="21" />
+    package="com.fairphone.mycontacts" >
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />

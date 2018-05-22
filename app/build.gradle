@@ -1,0 +1,27 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+
+    defaultConfig {
+        applicationId "community.fairphone.mycontacts"
+        minSdkVersion 17
+        targetSdkVersion 21
+        versionCode 3
+        versionName "2.1"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.android.support:support-v4:21.+'
+    implementation 'com.android.support:appcompat-v7:21.+'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:5.5'
+}
